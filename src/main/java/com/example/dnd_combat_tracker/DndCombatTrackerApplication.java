@@ -7,7 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DndCombatTrackerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DndCombatTrackerApplication.class, args);
+		SpringApplication.run(
+				DndCombatTrackerApplication.class,
+				args
+		);
 	}
 
 }
