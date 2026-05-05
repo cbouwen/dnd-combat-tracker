@@ -96,6 +96,18 @@ public class Combatant {
         );
     }
 
+    public void setInitiative(int roll) {
+        this.initiative = roll + this.initiativeModifier;
+    }
+
+    public void takeDamage(int damageAmount) {
+        this.currentHP = Math.max(0, this.currentHP - damageAmount);
+    }
+
+    public void heal(int healAmount) {
+        this.currentHP = Math.min(this.maxHP, this.currentHP + healAmount);
+    }
+
 }
 
 enum CombatantType {
