@@ -38,6 +38,18 @@ public class CombatEncounter {
                 EncounterState.PREPARING
         );
     }
+
+    public void addCombatant(Combatant combatant) {
+        if (state == EncounterState.ENDED) {
+            throw new IllegalStateException("Cannot add combatant to ended encounter");
+        }
+        this.combatants.add(combatant);
+    }
+
+    public void removeCombatant(Combatant combatant) {
+        if (!this.combatants.remove(combatant))
+            System.out.println("Cannot find combatant");
+    }
 }
 
 enum EncounterState {
