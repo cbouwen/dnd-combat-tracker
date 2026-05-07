@@ -10,6 +10,12 @@ public class CombatEncounter {
     private int currentTurn;
     private EncounterState state;
 
+    enum EncounterState {
+        PREPARING,
+        ACTIVE,
+        ENDED
+    }
+
     private CombatEncounter(
             String id,
             List<Combatant> combatants,
@@ -74,10 +80,4 @@ public class CombatEncounter {
         this.currentTurn = (this.currentTurn - 1) % combatants.size();
     }
 
-}
-
-enum EncounterState {
-    PREPARING,
-    ACTIVE,
-    ENDED
 }
