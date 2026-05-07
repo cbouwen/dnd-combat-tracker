@@ -8,7 +8,7 @@ public class Combatant {
     private int currentHP;
     private final int ac;
     private Integer initiative;
-    private int initiativeModifier;
+    private final int initiativeModifier;
     private final CombatantType type;
 
     private Combatant(
@@ -96,10 +96,6 @@ public class Combatant {
         );
     }
 
-    public void setInitiative(int roll) {
-        this.initiative = roll + this.initiativeModifier;
-    }
-
     public void takeDamage(int damageAmount) {
         this.currentHP = Math.max(0, this.currentHP - damageAmount);
     }
@@ -108,8 +104,20 @@ public class Combatant {
         this.currentHP = Math.min(this.maxHP, this.currentHP + healAmount);
     }
 
+    public void setInitiative(int roll) {
+        this.initiative = roll + this.initiativeModifier;
+    }
+
+    public Integer getInitiative() {
+        return initiative;
+    }
+
+    public int getInitiativeModifier() {
+        return initiativeModifier;
+    }
+
+    public CombatantType getType() {
+        return type;
+    }
 }
 
-enum CombatantType {
-    PC, NPC, ENEMY
-}

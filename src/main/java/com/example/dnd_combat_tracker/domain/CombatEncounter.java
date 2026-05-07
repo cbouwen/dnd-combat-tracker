@@ -1,6 +1,7 @@
 package com.example.dnd_combat_tracker.domain;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class CombatEncounter {
@@ -24,7 +25,7 @@ public class CombatEncounter {
     public static CombatEncounter create(String id) {
         return new CombatEncounter(
                 id,
-                new ArrayList<>(),
+                List.of(),
                 0,
                 EncounterState.PREPARING
         );
@@ -48,8 +49,30 @@ public class CombatEncounter {
 
     public void removeCombatant(Combatant combatant) {
         if (!this.combatants.remove(combatant))
-            System.out.println("Cannot find combatant");
+            System.out.println("Cannot find combatant"); //TODO decent logging here instead of stderror?
     }
+
+    private void sortByInitiative() {
+        combatants.sort(
+                Comparator.comparing(Combatant::getInitiative)
+                        .thenComparing(c -> c.getType().getPriority())
+                        .thenComparing(Combatant::getInitiativeModifier)
+                        .reversed()
+        );
+    }
+
+    public void nextTurn() {
+        if (this.state != EncounterState.ACTIVE)
+            throw new IllegalStateException("Encounter is not active");
+        this.currentTurn = (this.currentTurn + 1) % combatants.size();
+    }
+
+    public void previousTurn() {
+        if (this.state != EncounterState.ACTIVE)
+            throw new IllegalStateException("Encounter is not active");
+        this.currentTurn = (this.currentTurn - 1) % combatants.size();
+    }
+
 }
 
 enum EncounterState {
