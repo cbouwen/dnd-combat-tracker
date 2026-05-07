@@ -106,9 +106,9 @@ public class Combatant {
 
     public void setInitiative(int value) {
         if (this.type == CombatantType.PC) {
-            this.initiative = value; // already includes modifier
+            this.initiative = value;
         } else {
-            this.initiative = value + this.initiativeModifier; // add modifier
+            this.initiative = value + this.initiativeModifier;
         }
     }
 
