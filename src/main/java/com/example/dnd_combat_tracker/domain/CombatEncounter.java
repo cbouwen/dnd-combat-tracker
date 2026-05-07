@@ -48,8 +48,9 @@ public class CombatEncounter {
     }
 
     public void removeCombatant(Combatant combatant) {
-        if (!this.combatants.remove(combatant))
-            System.out.println("Cannot find combatant"); //TODO decent logging here instead of stderror?
+        if (!this.combatants.remove(combatant)) {
+            throw new IllegalArgumentException("Combatant not found in encounter");
+        }
     }
 
     private void sortByInitiative() {
