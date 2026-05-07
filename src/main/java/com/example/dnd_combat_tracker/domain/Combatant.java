@@ -104,8 +104,12 @@ public class Combatant {
         this.currentHP = Math.min(this.maxHP, this.currentHP + healAmount);
     }
 
-    public void setInitiative(int roll) {
-        this.initiative = roll + this.initiativeModifier;
+    public void setInitiative(int value) {
+        if (this.type == CombatantType.PC) {
+            this.initiative = value; // already includes modifier
+        } else {
+            this.initiative = value + this.initiativeModifier; // add modifier
+        }
     }
 
     public Integer getInitiative() {
