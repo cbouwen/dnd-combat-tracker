@@ -1,6 +1,6 @@
 package com.example.dnd_combat_tracker.domain;
 
-enum CombatantType {
+public enum CombatantType {
     PC(1),
     NPC(2),
     ENEMY(3);
