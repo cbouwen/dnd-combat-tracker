@@ -33,7 +33,6 @@ public class Combatant {
         this.type = type;
     }
 
-
     public static Combatant createPlayer(
             String id,
             String name,
@@ -97,10 +96,16 @@ public class Combatant {
     }
 
     public void takeDamage(int damageAmount) {
+        if (damageAmount < 0) {
+            throw new IllegalArgumentException("Damage cannot be negative");
+        }
         this.currentHP = Math.max(0, this.currentHP - damageAmount);
     }
 
     public void heal(int healAmount) {
+        if (healAmount < 0) {
+            throw new IllegalArgumentException("Healing cannot be negative");
+        }
         this.currentHP = Math.min(this.maxHP, this.currentHP + healAmount);
     }
 
@@ -126,5 +131,9 @@ public class Combatant {
 
     public String getId() {
         return id;
+    }
+
+    public int getCurrentHP() {
+        return currentHP;
     }
 }
