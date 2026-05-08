@@ -3,19 +3,19 @@ package com.example.dnd_combat_tracker.domain;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class CombatEncounter {
     private final String id;
     private final List<Combatant> combatants;
     private int currentTurn;
-    private EncounterState state;
+    private final EncounterState state;
 
     enum EncounterState {
         PREPARING,
         ACTIVE,
-        ENDED
+        ENDED;
     }
-
     private CombatEncounter(
             String id,
             List<Combatant> combatants,
@@ -57,6 +57,12 @@ public class CombatEncounter {
         if (!this.combatants.remove(combatant)) {
             throw new IllegalArgumentException("Combatant not found in encounter");
         }
+    }
+
+    public Optional<Combatant> findCombatantById (String combatantId) {
+        return this.combatants.stream()
+                .filter(combatant -> combatant.getId().equals(combatantId))
+                .findFirst();
     }
 
     private void sortByInitiative() {

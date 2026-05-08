@@ -123,5 +123,8 @@ public class Combatant {
     public CombatantType getType() {
         return type;
     }
-}
 
+    public String getId() {
+        return id;
+    }
+}
