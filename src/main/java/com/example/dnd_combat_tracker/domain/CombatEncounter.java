@@ -1,5 +1,7 @@
 package com.example.dnd_combat_tracker.domain;
 
+import com.example.dnd_combat_tracker.application.exceptions.NotAllInitiativesSetException;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -9,9 +11,9 @@ public class CombatEncounter {
     private final String id;
     private final List<Combatant> combatants;
     private int currentTurn;
-    private final EncounterState state;
+    private EncounterState state;
 
-    enum EncounterState {
+    public enum EncounterState {
         PREPARING,
         ACTIVE,
         ENDED;
@@ -27,7 +29,6 @@ public class CombatEncounter {
         this.currentTurn = currentTurn;
         this.state = state;
     }
-
     public static CombatEncounter create(String id) {
         return new CombatEncounter(
                 id,
@@ -44,6 +45,18 @@ public class CombatEncounter {
                 0,
                 EncounterState.PREPARING
         );
+    }
+
+    public void startEncounter() {
+        if (combatants.stream().anyMatch(c -> c.getInitiative() == null)) {
+            throw new NotAllInitiativesSetException("Not all initiatives have been set");
+        }
+        sortByInitiative();
+        this.state = EncounterState.ACTIVE;
+    }
+
+    public void endEncounter() {
+        this.state = EncounterState.ENDED;
     }
 
     public void addCombatant(Combatant combatant) {
@@ -86,4 +99,7 @@ public class CombatEncounter {
         this.currentTurn = (this.currentTurn - 1) % combatants.size();
     }
 
+    public EncounterState getState() {
+        return state;
+    }
 }
