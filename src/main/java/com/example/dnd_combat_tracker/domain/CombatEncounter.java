@@ -1,5 +1,6 @@
 package com.example.dnd_combat_tracker.domain;
 
+import com.example.dnd_combat_tracker.application.exceptions.CombatantNotFoundException;
 import com.example.dnd_combat_tracker.application.exceptions.NotAllInitiativesSetException;
 
 import java.util.ArrayList;
@@ -12,12 +13,12 @@ public class CombatEncounter {
     private final List<Combatant> combatants;
     private int currentTurn;
     private EncounterState state;
-
     public enum EncounterState {
         PREPARING,
         ACTIVE,
-        ENDED;
+        ENDED
     }
+
     private CombatEncounter(
             String id,
             List<Combatant> combatants,
@@ -29,10 +30,11 @@ public class CombatEncounter {
         this.currentTurn = currentTurn;
         this.state = state;
     }
+
     public static CombatEncounter create(String id) {
         return new CombatEncounter(
                 id,
-                List.of(),
+                new ArrayList<>(),
                 0,
                 EncounterState.PREPARING
         );
@@ -59,6 +61,12 @@ public class CombatEncounter {
         this.state = EncounterState.ENDED;
     }
 
+    public Optional<Combatant> findCombatantById(String combatantId) {
+        return this.combatants.stream()
+                .filter(combatant -> combatant.getId().equals(combatantId))
+                .findFirst();
+    }
+
     public void addCombatant(Combatant combatant) {
         if (state == EncounterState.ENDED) {
             throw new IllegalStateException("Cannot add combatant to ended encounter");
@@ -66,16 +74,10 @@ public class CombatEncounter {
         this.combatants.add(combatant);
     }
 
-    public void removeCombatant(Combatant combatant) {
-        if (!this.combatants.remove(combatant)) {
-            throw new IllegalArgumentException("Combatant not found in encounter");
-        }
-    }
-
-    public Optional<Combatant> findCombatantById (String combatantId) {
-        return this.combatants.stream()
-                .filter(combatant -> combatant.getId().equals(combatantId))
-                .findFirst();
+    public void removeCombatantById(String combatantId) {
+        Combatant combatant = findCombatantById(combatantId)
+                .orElseThrow(() -> new CombatantNotFoundException("Combatant not found in encounter"));
+        this.combatants.remove(combatant);
     }
 
     private void sortByInitiative() {
@@ -96,10 +98,18 @@ public class CombatEncounter {
     public void previousTurn() {
         if (this.state != EncounterState.ACTIVE)
             throw new IllegalStateException("Encounter is not active");
-        this.currentTurn = (this.currentTurn - 1) % combatants.size();
+        this.currentTurn = (this.currentTurn - 1 + combatants.size()) % combatants.size();
     }
 
     public EncounterState getState() {
         return state;
+    }
+
+    public int getCurrentTurn() {
+        return currentTurn;
+    }
+
+    public List<Combatant> getCombatants() {
+        return combatants;
     }
 }
