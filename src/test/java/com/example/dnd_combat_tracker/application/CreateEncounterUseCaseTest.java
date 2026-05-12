@@ -17,10 +17,11 @@ class CreateEncounterUseCaseTest {
     void happyPath() {
         EncounterRepositoryPort encounterRepositoryPort = mock(EncounterRepositoryPort.class);
 
+        when(encounterRepositoryPort.getActive()).thenReturn(Optional.empty());
         CombatEncounter activeEncounter = new CreateEncounterUseCase(encounterRepositoryPort).execute();
-        when(encounterRepositoryPort.getActive()).thenReturn(Optional.of(activeEncounter));
 
         assertThat(activeEncounter.getState()).isEqualTo(CombatEncounter.EncounterState.PREPARING);
+        assertThat(activeEncounter.getCombatants().size()).isEqualTo(2);
         verify(encounterRepositoryPort).save(activeEncounter);
     }
 }
