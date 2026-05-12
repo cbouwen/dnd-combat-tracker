@@ -136,4 +136,8 @@ public class Combatant {
     public int getCurrentHP() {
         return currentHP;
     }
+
+    public String getName() {
+        return name;
+    }
 }
