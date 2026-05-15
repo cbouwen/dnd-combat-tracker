@@ -33,12 +33,22 @@ class StartEncounterUseCaseTest {
 
         new StartEncounterUseCase(encounterRepositoryPort).execute(playerInitiatives);
 
-        assertThat(encounter.findCombatantById("pc1").get().getInitiative()).isEqualTo(18);
-        assertThat(encounter.findCombatantById("pc2").get().getInitiative()).isEqualTo(12);
-        assertThat(encounter.findCombatantById("enemy1").get().getInitiative()).isNotNull();
+        assertThat(encounter.findCombatantById("pc1"))
+                .isPresent()
+                .get()
+                .extracting(Combatant::getInitiative)
+                .isEqualTo(18);
+        assertThat(encounter.findCombatantById("pc2"))
+                .isPresent()
+                .get()
+                .extracting(Combatant::getInitiative)
+                .isEqualTo(12);
+        assertThat(encounter.findCombatantById("enemy1"))
+                .isPresent()
+                .get()
+                .extracting(Combatant::getInitiative)
+                .isNotNull();
         assertThat(encounter.getState()).isEqualTo(CombatEncounter.EncounterState.ACTIVE);
         verify(encounterRepositoryPort).save(encounter);
-
     }
-
 }
