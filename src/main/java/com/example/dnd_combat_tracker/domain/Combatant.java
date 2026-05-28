@@ -140,4 +140,12 @@ public class Combatant {
     public String getName() {
         return name;
     }
+
+    public int getMaxHP() {
+        return maxHP;
+    }
+
+    public int getAc() {
+        return ac;
+    }
 }

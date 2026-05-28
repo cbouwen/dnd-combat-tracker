@@ -1,4 +1,4 @@
-package com.example.dnd_combat_tracker.infrastructure.outbound;
+package com.example.dnd_combat_tracker.infrastructure;
 
 import com.example.dnd_combat_tracker.application.ports.EncounterRepositoryPort;
 import com.example.dnd_combat_tracker.domain.CombatEncounter;

@@ -14,12 +14,14 @@ public class CombatEncounter {
     private final List<Combatant> combatants;
     private int currentTurn;
     private EncounterState state;
+
+
     public enum EncounterState {
         PREPARING,
         ACTIVE,
-        ENDED
-    }
+        ENDED;
 
+    }
     private CombatEncounter(
             String id,
             List<Combatant> combatants,
@@ -101,6 +103,8 @@ public class CombatEncounter {
             throw new EncounterNotActiveException("Encounter is not active");
         this.currentTurn = (this.currentTurn - 1 + combatants.size()) % combatants.size();
     }
+
+    public String getId() { return id;}
 
     public EncounterState getState() {
         return state;
