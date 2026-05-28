@@ -2,6 +2,7 @@ package com.example.dnd_combat_tracker.domain;
 
 import com.example.dnd_combat_tracker.application.exceptions.CombatantNotFoundException;
 import com.example.dnd_combat_tracker.application.exceptions.NotAllInitiativesSetException;
+import com.example.dnd_combat_tracker.domain.exceptions.EncounterNotActiveException;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -69,7 +70,7 @@ public class CombatEncounter {
 
     public void addCombatant(Combatant combatant) {
         if (state == EncounterState.ENDED) {
-            throw new IllegalStateException("Cannot add combatant to ended encounter");
+            throw new EncounterNotActiveException("Cannot add combatant to ended encounter");
         }
         this.combatants.add(combatant);
     }
@@ -91,13 +92,13 @@ public class CombatEncounter {
 
     public void nextTurn() {
         if (this.state != EncounterState.ACTIVE)
-            throw new IllegalStateException("Encounter is not active");
+            throw new EncounterNotActiveException("Encounter is not active");
         this.currentTurn = (this.currentTurn + 1) % combatants.size();
     }
 
     public void previousTurn() {
         if (this.state != EncounterState.ACTIVE)
-            throw new IllegalStateException("Encounter is not active");
+            throw new EncounterNotActiveException("Encounter is not active");
         this.currentTurn = (this.currentTurn - 1 + combatants.size()) % combatants.size();
     }
 
