@@ -43,7 +43,7 @@ public class Combatant {
         return new Combatant(
                 id,
                 name,
-                null,
+                "",
                 maxHP,
                 maxHP,
                 ac,
