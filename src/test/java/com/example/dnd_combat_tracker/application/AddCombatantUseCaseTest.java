@@ -30,7 +30,7 @@ class AddCombatantUseCaseTest {
                 combatEncounterId,
                 CombatantType.ENEMY,
                 "bandit",
-                Optional.of("template-id"),
+                "template-id",
                 14,
                 13,
                 1

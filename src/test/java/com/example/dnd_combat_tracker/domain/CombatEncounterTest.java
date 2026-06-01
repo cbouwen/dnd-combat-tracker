@@ -2,6 +2,7 @@ package com.example.dnd_combat_tracker.domain;
 
 import com.example.dnd_combat_tracker.application.exceptions.CombatantNotFoundException;
 import com.example.dnd_combat_tracker.application.exceptions.NotAllInitiativesSetException;
+import com.example.dnd_combat_tracker.domain.exceptions.EncounterNotActiveException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -83,7 +84,7 @@ class CombatEncounterTest {
     void nextTurnShouldThrowExceptionIfEncounterHasNotStartedYet() {
         CombatEncounter combatEncounter = createBasicEncounter();
 
-        assertThrows(IllegalStateException.class, combatEncounter::nextTurn);
+        assertThrows(EncounterNotActiveException.class, combatEncounter::nextTurn);
     }
 
     @Test
@@ -133,7 +134,7 @@ class CombatEncounterTest {
         CombatEncounter combatEncounter = createBasicEncounter();
         combatEncounter.endEncounter();
 
-        assertThrows(IllegalStateException.class, () -> combatEncounter.addCombatant(Combatant.createPlayer("3", "Didix", 20, 14, 2)));
+        assertThrows(EncounterNotActiveException.class, () -> combatEncounter.addCombatant(Combatant.createPlayer("3", "Didix", 20, 14, 2)));
     }
 
     @Test
