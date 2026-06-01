@@ -2,7 +2,6 @@ package com.example.dnd_combat_tracker.application;
 
 import com.example.dnd_combat_tracker.application.commands.AddCombatantCommand;
 import com.example.dnd_combat_tracker.application.exceptions.EncounterNotFoundException;
-import com.example.dnd_combat_tracker.application.exceptions.TemplateIdRequiredException;
 import com.example.dnd_combat_tracker.application.ports.EncounterRepositoryPort;
 import com.example.dnd_combat_tracker.domain.CombatEncounter;
 import com.example.dnd_combat_tracker.domain.Combatant;
@@ -34,7 +33,7 @@ public class AddCombatantUseCase {
             case NPC -> Combatant.createNPC(
                     combatantID,
                     addCombatantCommand.name(),
-                    addCombatantCommand.templateId().orElseThrow(() -> new TemplateIdRequiredException("Template required for npc")),
+                    addCombatantCommand.templateId(),
                     addCombatantCommand.maxHP(),
                     addCombatantCommand.ac(),
                     addCombatantCommand.initiativeModifier()
@@ -42,7 +41,7 @@ public class AddCombatantUseCase {
             case ENEMY -> Combatant.createEnemy(
                     combatantID,
                     addCombatantCommand.name(),
-                    addCombatantCommand.templateId().orElseThrow(() -> new TemplateIdRequiredException("Template required for npc")),
+                    addCombatantCommand.templateId(),
                     addCombatantCommand.maxHP(),
                     addCombatantCommand.ac(),
                     addCombatantCommand.initiativeModifier()
