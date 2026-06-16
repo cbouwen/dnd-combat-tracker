@@ -3,6 +3,7 @@ package com.example.dnd_combat_tracker.infrastructure.controlleradvice;
 import com.example.dnd_combat_tracker.application.exceptions.CombatantNotFoundException;
 import com.example.dnd_combat_tracker.application.exceptions.EncounterNotFoundException;
 import com.example.dnd_combat_tracker.application.exceptions.NotAllInitiativesSetException;
+import com.example.dnd_combat_tracker.domain.exceptions.DuplicatePlayerException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +33,14 @@ public class RestExceptionHandler {
     protected ResponseEntity<String> handleNotAllInitiativesSet(NotAllInitiativesSetException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
+                .header("Content-Type", MediaType.TEXT_PLAIN_VALUE)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(DuplicatePlayerException.class)
+    protected ResponseEntity<String> handleDuplicatePlayerAdded(DuplicatePlayerException ex) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
                 .header("Content-Type", MediaType.TEXT_PLAIN_VALUE)
                 .body(ex.getMessage());
     }

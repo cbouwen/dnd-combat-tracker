@@ -1,6 +1,7 @@
 package com.example.dnd_combat_tracker.domain;
 
 import com.example.dnd_combat_tracker.application.exceptions.CombatantNotFoundException;
+import com.example.dnd_combat_tracker.domain.exceptions.DuplicatePlayerException;
 import com.example.dnd_combat_tracker.application.exceptions.NotAllInitiativesSetException;
 import com.example.dnd_combat_tracker.domain.exceptions.EncounterNotActiveException;
 
@@ -14,6 +15,7 @@ public class CombatEncounter {
     private final List<Combatant> combatants;
     private int currentTurn;
     private EncounterState state;
+
     public enum EncounterState {
         PREPARING,
         ACTIVE,
@@ -68,11 +70,19 @@ public class CombatEncounter {
                 .findFirst();
     }
 
-    public void addCombatant(Combatant combatant) {
+    public void addCombatant(Combatant newCombatant) {
         if (state == EncounterState.ENDED) {
             throw new EncounterNotActiveException("Cannot add combatant to ended encounter");
         }
-        this.combatants.add(combatant);
+        if (newCombatant.getType() == CombatantType.PC) {
+            boolean pcAlreadyExists = combatants.stream()
+                    .anyMatch(combatant -> combatant.getType() == CombatantType.PC &&
+                            newCombatant.getName().equals(combatant.getName()));
+            if (pcAlreadyExists) {
+                throw new DuplicatePlayerException(newCombatant.getName());
+            }
+        }
+        this.combatants.add(newCombatant);
     }
 
     public void removeCombatantById(String combatantId) {
@@ -102,7 +112,9 @@ public class CombatEncounter {
         this.currentTurn = (this.currentTurn - 1 + combatants.size()) % combatants.size();
     }
 
-    public String getId() { return id;}
+    public String getId() {
+        return id;
+    }
 
     public EncounterState getState() {
         return state;

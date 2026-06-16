@@ -31,7 +31,7 @@ Combatants have three types: `PC`, `NPC`, `ENEMY`. When starting an encounter, P
 
 ### Next endpoints to build
 - [ ] `GET /api/encounters/{id}` — view encounter state
-- [ ] `POST /api/encounters/{id}/start` — start encounter
+- [x] `POST /api/encounters/{id}/start` — start encounter
 - [ ] `POST /api/encounters/{id}/next-turn` — advance turn
 - [ ] `DELETE /api/encounters/{id}/combatants/{combatantId}` — remove combatant
 
