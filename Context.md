@@ -31,10 +31,10 @@ Combatants have three types: `PC`, `NPC`, `ENEMY`. When starting an encounter, P
 
 ### High priority (blocking further work)
 - [x] Delete `ActiveEncounterAlreadyExistsException` (unused)
-- [ ] Refactor `StartEncounterUseCase` to accept `encounterId` and use `findById()` instead of `getActive()`
-- [ ] Create `StartEncounterCommand`
-- [ ] Refactor `NextTurnUseCase` to accept `encounterId` and use `findById()` instead of `getActive()`
-- [ ] Fix use case tests that rely on `getActive()`
+- [x] Refactor `StartEncounterUseCase` to accept `encounterId` and use `findById()` instead of `getActive()`
+- [x] Create `StartEncounterCommand`
+- [x] Refactor `NextTurnUseCase` to accept `encounterId` and use `findById()` instead of `getActive()`
+- [x] Fix use case tests that rely on `getActive()`
 
 ### Next endpoints to build
 - [ ] `GET /api/encounters/{id}` — view encounter state

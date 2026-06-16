@@ -22,12 +22,6 @@ public class EncounterRepositoryAdapter implements EncounterRepositoryPort {
         return Optional.ofNullable(encounters.get(id));
     }
 
-    //TODO: This works for 1 DM. Once we implement multiple users, this breaks. Rewrite every getActive() with findById()
-    @Override
-    public Optional<CombatEncounter> getActive() {
-        return encounters.values().stream().filter(e -> e.getState() == CombatEncounter.EncounterState.ACTIVE).findFirst();
-    }
-
     @Override
     public void clear() {
         encounters.clear();
