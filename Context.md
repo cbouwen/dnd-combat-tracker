@@ -30,7 +30,7 @@ Combatants have three types: `PC`, `NPC`, `ENEMY`. When starting an encounter, P
 ## Current State / TODOs
 
 ### High priority (blocking further work)
-- [ ] Delete `ActiveEncounterAlreadyExistsException` (unused)
+- [x] Delete `ActiveEncounterAlreadyExistsException` (unused)
 - [ ] Refactor `StartEncounterUseCase` to accept `encounterId` and use `findById()` instead of `getActive()`
 - [ ] Create `StartEncounterCommand`
 - [ ] Refactor `NextTurnUseCase` to accept `encounterId` and use `findById()` instead of `getActive()`

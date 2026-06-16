@@ -1,5 +1,6 @@
 package com.example.dnd_combat_tracker.application;
 
+import com.example.dnd_combat_tracker.application.commands.StartEncounterCommand;
 import com.example.dnd_combat_tracker.application.exceptions.CombatantNotFoundException;
 import com.example.dnd_combat_tracker.application.exceptions.EncounterNotFoundException;
 import com.example.dnd_combat_tracker.application.exceptions.NotAllInitiativesSetException;
@@ -22,12 +23,11 @@ public class StartEncounterUseCase {
         this.encounterRepositoryPort = encounterRepositoryPort;
     }
 
-    //TODO for this ticket: Find Encounter by encounterId
-    public void execute(Map<String, Integer> playerInitiatives) {
-        CombatEncounter combatEncounter = this.encounterRepositoryPort.getActive().orElseThrow(() -> new EncounterNotFoundException("No active encounter"));
+    public void execute(StartEncounterCommand startEncounterCommand) {
+        CombatEncounter combatEncounter = this.encounterRepositoryPort.findById(startEncounterCommand.encounterId()).orElseThrow(() -> new EncounterNotFoundException("No encounter found for id: " + startEncounterCommand.encounterId()));
 
-        validatePCsIncluded(playerInitiatives, combatEncounter);
-        validateAndSetPCInitiative(playerInitiatives, combatEncounter);
+        validatePCsIncluded(startEncounterCommand.playerInitiatives(), combatEncounter);
+        validateAndSetPCInitiative(startEncounterCommand.playerInitiatives(), combatEncounter);
         setNPCInitiative(combatEncounter);
 
         combatEncounter.startEncounter();

@@ -1,5 +1,6 @@
 package com.example.dnd_combat_tracker.application;
 
+import com.example.dnd_combat_tracker.application.commands.StartEncounterCommand;
 import com.example.dnd_combat_tracker.application.ports.EncounterRepositoryPort;
 import com.example.dnd_combat_tracker.domain.CombatEncounter;
 import com.example.dnd_combat_tracker.domain.Combatant;
@@ -16,7 +17,6 @@ class StartEncounterUseCaseTest {
 
     @Test
     void happyPath() {
-        EncounterRepositoryPort encounterRepositoryPort = mock(EncounterRepositoryPort.class);
         List<Combatant> combatants = List.of(
                 Combatant.createPlayer("pc1", "Zeraack", 20, 15, 3),
                 Combatant.createPlayer("pc2", "Solid", 30, 18, 1),
@@ -28,10 +28,14 @@ class StartEncounterUseCaseTest {
                 "pc1", 18,
                 "pc2", 12
         );
-        CombatEncounter encounter = CombatEncounter.createWithCombatants("encounter1", combatants);
-        when(encounterRepositoryPort.getActive()).thenReturn(Optional.of(encounter));
+        String combatEncounter = "encounter1";
 
-        new StartEncounterUseCase(encounterRepositoryPort).execute(playerInitiatives);
+        CombatEncounter encounter = CombatEncounter.createWithCombatants(combatEncounter, combatants);
+        EncounterRepositoryPort encounterRepositoryPort = mock(EncounterRepositoryPort.class);
+        when(encounterRepositoryPort.findById(combatEncounter)).thenReturn(Optional.of(encounter));
+        StartEncounterCommand startEncounterCommand = new StartEncounterCommand(combatEncounter, playerInitiatives);
+
+        new StartEncounterUseCase(encounterRepositoryPort).execute(startEncounterCommand);
 
         assertThat(encounter.findCombatantById("pc1"))
                 .isPresent()
