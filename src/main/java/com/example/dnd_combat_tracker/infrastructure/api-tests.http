@@ -3,7 +3,7 @@ POST http://localhost:8080/api/encounters
 Content-Type: application/json
 
 ### Add Combatant (replace {encounter-id} with actual ID from above)
-POST http://localhost:8080/api/encounters/ee260826-7518-4b92-b266-4e7f3ddbc952/combatants
+POST http://localhost:8080/api/encounters/<encounter-id>/combatants
 Content-Type: application/json
 
 {
@@ -16,7 +16,7 @@ Content-Type: application/json
 }
 
 ### Add Player Character
-POST http://localhost:8080/api/encounters/ee260826-7518-4b92-b2663ddbc952/combatants
+POST http://localhost:8080/api/encounters/<encounter-id>/combatants
 Content-Type: application/json
 
 {
@@ -26,4 +26,14 @@ Content-Type: application/json
   "maxHP": 30,
   "ac": 15,
   "initiativeModifier": 3
+}
+
+### Start the actual encounter
+POST http://localhost:8080/api/encounters/<encounter-id>/start
+Content-Type: application/json
+
+{
+  "playerInitiatives": {
+    "<combatantId>": 18
+  }
 }

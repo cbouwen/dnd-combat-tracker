@@ -3,7 +3,7 @@ package com.example.dnd_combat_tracker.infrastructure.dtos;
 import com.example.dnd_combat_tracker.domain.Combatant;
 
 public record CombatantResponse(
-        String id,
+        String combatantId,
         String name,
         String type,
         int currentHp,

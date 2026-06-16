@@ -23,7 +23,7 @@ public class StartEncounterUseCase {
         this.encounterRepositoryPort = encounterRepositoryPort;
     }
 
-    public void execute(StartEncounterCommand startEncounterCommand) {
+    public CombatEncounter execute(StartEncounterCommand startEncounterCommand) {
         CombatEncounter combatEncounter = this.encounterRepositoryPort.findById(startEncounterCommand.encounterId()).orElseThrow(() -> new EncounterNotFoundException(startEncounterCommand.encounterId()));
 
         validatePCsIncluded(startEncounterCommand.playerInitiatives(), combatEncounter);
@@ -32,6 +32,7 @@ public class StartEncounterUseCase {
 
         combatEncounter.startEncounter();
         this.encounterRepositoryPort.save(combatEncounter);
+        return combatEncounter;
     }
 
     private static void validatePCsIncluded(Map<String, Integer> playerInitiatives, CombatEncounter combatEncounter) {
