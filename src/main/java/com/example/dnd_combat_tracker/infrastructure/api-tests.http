@@ -1,0 +1,29 @@
+### Create Encounter
+POST http://localhost:8080/api/encounters
+Content-Type: application/json
+
+### Add Combatant (replace {encounter-id} with actual ID from above)
+POST http://localhost:8080/api/encounters/ee260826-7518-4b92-b266-4e7f3ddbc952/combatants
+Content-Type: application/json
+
+{
+  "type": "ENEMY",
+  "name": "Goblin",
+  "templateId": "goblin",
+  "maxHP": 7,
+  "ac": 15,
+  "initiativeModifier": 2
+}
+
+### Add Player Character
+POST http://localhost:8080/api/encounters/ee260826-7518-4b92-b2663ddbc952/combatants
+Content-Type: application/json
+
+{
+  "type": "PC",
+  "name": "Zeraack",
+  "templateId": "",
+  "maxHP": 30,
+  "ac": 15,
+  "initiativeModifier": 3
+}

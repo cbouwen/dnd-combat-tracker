@@ -22,6 +22,7 @@ public class StartEncounterUseCase {
         this.encounterRepositoryPort = encounterRepositoryPort;
     }
 
+    //TODO for this ticket: Find Encounter by encounterId
     public void execute(Map<String, Integer> playerInitiatives) {
         CombatEncounter combatEncounter = this.encounterRepositoryPort.getActive().orElseThrow(() -> new EncounterNotFoundException("No active encounter"));
 

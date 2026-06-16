@@ -1,55 +1,36 @@
 package com.example.dnd_combat_tracker.infrastructure.controllers;
 
+import com.example.dnd_combat_tracker.application.AddCombatantUseCase;
 import com.example.dnd_combat_tracker.application.CreateEncounterUseCase;
 import com.example.dnd_combat_tracker.domain.CombatEncounter;
 import com.example.dnd_combat_tracker.domain.Combatant;
-import com.example.dnd_combat_tracker.infrastructure.dtos.CombatEncounterDTO;
-import com.example.dnd_combat_tracker.infrastructure.dtos.CombatantDTO;
+import com.example.dnd_combat_tracker.infrastructure.dtos.AddCombatantRequest;
+import com.example.dnd_combat_tracker.infrastructure.dtos.CombatEncounterResponse;
+import com.example.dnd_combat_tracker.infrastructure.dtos.CombatantResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/encounters")
 public class CombatEncounterController {
     private final CreateEncounterUseCase createEncounterUseCase;
+    private final AddCombatantUseCase addCombatantUseCase;
 
-    public CombatEncounterController(CreateEncounterUseCase createEncounterUseCase) {
+    public CombatEncounterController(CreateEncounterUseCase createEncounterUseCase, AddCombatantUseCase addCombatantUseCase) {
         this.createEncounterUseCase = createEncounterUseCase;
+        this.addCombatantUseCase = addCombatantUseCase;
     }
 
     @PostMapping
-    public ResponseEntity<CombatEncounterDTO> createEncounter() {
+    public ResponseEntity<CombatEncounterResponse> createEncounter() {
         CombatEncounter combatEncounter = createEncounterUseCase.execute();
-        CombatEncounterDTO combatEncounterDTO = toCombatEncounterDTO(combatEncounter);
-        return ResponseEntity.status(HttpStatus.CREATED).body(combatEncounterDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(CombatEncounterResponse.from(combatEncounter));
     }
 
-    private CombatEncounterDTO toCombatEncounterDTO(CombatEncounter encounter) {
-        return new CombatEncounterDTO(
-                encounter.getId(),
-                encounter.getState().toString(),
-                encounter.getCombatants().stream()
-                        .map(this::toCombatantDTO)
-                        .toList()
-        );
+    @PostMapping("/{id}/combatants")
+    public ResponseEntity<CombatantResponse> addCombatant(@RequestBody AddCombatantRequest addCombatantRequest, @PathVariable String id) {
+        Combatant combatant = addCombatantUseCase.execute(addCombatantRequest.toCommand(id));
+        return ResponseEntity.status(HttpStatus.CREATED).body(CombatantResponse.from(combatant));
     }
-
-    private CombatantDTO toCombatantDTO(Combatant combatant) {
-        return new CombatantDTO(
-                combatant.getId(),
-                combatant.getName(),
-                combatant.getType().toString(),
-                combatant.getCurrentHP(),
-                combatant.getMaxHP(),
-                combatant.getAc(),
-                combatant.getInitiative(),
-                combatant.getInitiativeModifier()
-        );
-    }
-
 }

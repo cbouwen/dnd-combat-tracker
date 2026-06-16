@@ -25,7 +25,7 @@ class AddCombatantUseCaseTest {
         String combatEncounterId = UUID.randomUUID().toString();
         CombatEncounter activeEncounter = CombatEncounter.createWithCombatants(combatEncounterId, combatants);
         EncounterRepositoryPort encounterRepositoryPort = mock(EncounterRepositoryPort.class);
-        when(encounterRepositoryPort.getActive()).thenReturn(Optional.of(activeEncounter));
+        when(encounterRepositoryPort.findById(combatEncounterId)).thenReturn(Optional.of(activeEncounter));
         AddCombatantCommand addCombatantCommand = new AddCombatantCommand(
                 combatEncounterId,
                 CombatantType.ENEMY,

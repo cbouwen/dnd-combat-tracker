@@ -4,24 +4,32 @@ import com.example.dnd_combat_tracker.application.ports.EncounterRepositoryPort;
 import com.example.dnd_combat_tracker.domain.CombatEncounter;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Component
 public class EncounterRepositoryAdapter implements EncounterRepositoryPort {
-    private CombatEncounter activeEncounter;
+    private final Map<String, CombatEncounter> encounters = new HashMap<>();
 
     @Override
     public void save(CombatEncounter encounter) {
-            this.activeEncounter = encounter;
+            encounters.put(encounter.getId(), encounter);
     }
 
     @Override
+    public Optional<CombatEncounter> findById(String id) {
+        return Optional.ofNullable(encounters.get(id));
+    }
+
+    //TODO: This works for 1 DM. Once we implement multiple users, this breaks.
+    @Override
     public Optional<CombatEncounter> getActive() {
-        return Optional.ofNullable(this.activeEncounter);
+        return encounters.values().stream().filter(e -> e.getState() == CombatEncounter.EncounterState.ACTIVE).findFirst();
     }
 
     @Override
     public void clear() {
-        this.activeEncounter = null;
+        encounters.clear();
     }
 }

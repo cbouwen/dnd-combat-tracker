@@ -18,9 +18,9 @@ public class AddCombatantUseCase {
         this.encounterRepositoryPort = encounterRepositoryPort;
     }
 
-    public void execute(AddCombatantCommand addCombatantCommand) {
-        CombatEncounter encounter = encounterRepositoryPort.getActive()
-                .orElseThrow(() -> new EncounterNotFoundException("No active encounter"));
+    public Combatant execute(AddCombatantCommand addCombatantCommand) {
+        CombatEncounter encounter = encounterRepositoryPort.findById(addCombatantCommand.encounterId())
+                .orElseThrow(() -> new EncounterNotFoundException(addCombatantCommand.encounterId()));
         String combatantID = UUID.randomUUID().toString();
         Combatant combatant = switch (addCombatantCommand.type()) {
             case PC -> Combatant.createPlayer(
@@ -49,5 +49,6 @@ public class AddCombatantUseCase {
         };
         encounter.addCombatant(combatant);
         encounterRepositoryPort.save(encounter);
+        return combatant;
     }
 }
