@@ -117,9 +117,9 @@ class CombatEncounterTest {
                 Combatant.createPlayer("3", "Inhil", 15, 11, 2)
         );
         CombatEncounter combatEncounter = CombatEncounter.createWithCombatants("1800", combatants);
-        combatEncounter.findCombatantById("1").orElseThrow(() -> new CombatantNotFoundException("")).setInitiative(15);
-        combatEncounter.findCombatantById("2").orElseThrow(() -> new CombatantNotFoundException("")).setInitiative(10);
-        combatEncounter.findCombatantById("3").orElseThrow(() -> new CombatantNotFoundException("")).setInitiative(20);
+        combatEncounter.findCombatantById("1").orElseThrow(() -> new CombatantNotFoundException("1")).setInitiative(15);
+        combatEncounter.findCombatantById("2").orElseThrow(() -> new CombatantNotFoundException("2")).setInitiative(10);
+        combatEncounter.findCombatantById("3").orElseThrow(() -> new CombatantNotFoundException("3")).setInitiative(20);
 
         combatEncounter.startEncounter();
 

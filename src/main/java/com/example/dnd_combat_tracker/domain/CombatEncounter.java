@@ -14,14 +14,12 @@ public class CombatEncounter {
     private final List<Combatant> combatants;
     private int currentTurn;
     private EncounterState state;
-
-
     public enum EncounterState {
         PREPARING,
         ACTIVE,
-        ENDED;
-
+        ENDED
     }
+
     private CombatEncounter(
             String id,
             List<Combatant> combatants,
@@ -79,7 +77,7 @@ public class CombatEncounter {
 
     public void removeCombatantById(String combatantId) {
         Combatant combatant = findCombatantById(combatantId)
-                .orElseThrow(() -> new CombatantNotFoundException("Combatant not found in encounter"));
+                .orElseThrow(() -> new CombatantNotFoundException(combatantId));
         this.combatants.remove(combatant);
     }
 

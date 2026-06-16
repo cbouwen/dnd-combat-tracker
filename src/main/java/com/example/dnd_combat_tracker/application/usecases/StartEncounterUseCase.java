@@ -48,7 +48,7 @@ public class StartEncounterUseCase {
     private static void validateAndSetPCInitiative(Map<String, Integer> playerInitiatives, CombatEncounter combatEncounter) {
         playerInitiatives.forEach((combatantId, initiative) -> {
             Combatant combatant = combatEncounter.findCombatantById(combatantId)
-                    .orElseThrow(() -> new CombatantNotFoundException("No combatant found for id: " + combatantId));
+                    .orElseThrow(() -> new CombatantNotFoundException(combatantId));
             if (initiative == null) {
                 throw new NotAllInitiativesSetException("Initiative cannot be null for combatant: " + combatantId);
             }
