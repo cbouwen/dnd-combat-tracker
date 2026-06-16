@@ -1,7 +1,7 @@
 package com.example.dnd_combat_tracker.infrastructure.controllers;
 
-import com.example.dnd_combat_tracker.application.AddCombatantUseCase;
-import com.example.dnd_combat_tracker.application.CreateEncounterUseCase;
+import com.example.dnd_combat_tracker.application.usecases.AddCombatantUseCase;
+import com.example.dnd_combat_tracker.application.usecases.CreateEncounterUseCase;
 import com.example.dnd_combat_tracker.domain.CombatEncounter;
 import com.example.dnd_combat_tracker.domain.Combatant;
 import com.example.dnd_combat_tracker.infrastructure.dtos.AddCombatantRequest;

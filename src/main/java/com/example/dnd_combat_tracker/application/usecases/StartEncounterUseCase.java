@@ -1,4 +1,4 @@
-package com.example.dnd_combat_tracker.application;
+package com.example.dnd_combat_tracker.application.usecases;
 
 import com.example.dnd_combat_tracker.application.commands.StartEncounterCommand;
 import com.example.dnd_combat_tracker.application.exceptions.CombatantNotFoundException;
@@ -24,7 +24,7 @@ public class StartEncounterUseCase {
     }
 
     public void execute(StartEncounterCommand startEncounterCommand) {
-        CombatEncounter combatEncounter = this.encounterRepositoryPort.findById(startEncounterCommand.encounterId()).orElseThrow(() -> new EncounterNotFoundException("No encounter found for id: " + startEncounterCommand.encounterId()));
+        CombatEncounter combatEncounter = this.encounterRepositoryPort.findById(startEncounterCommand.encounterId()).orElseThrow(() -> new EncounterNotFoundException(startEncounterCommand.encounterId()));
 
         validatePCsIncluded(startEncounterCommand.playerInitiatives(), combatEncounter);
         validateAndSetPCInitiative(startEncounterCommand.playerInitiatives(), combatEncounter);

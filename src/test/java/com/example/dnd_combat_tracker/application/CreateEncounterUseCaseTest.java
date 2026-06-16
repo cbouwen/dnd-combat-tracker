@@ -1,6 +1,7 @@
 package com.example.dnd_combat_tracker.application;
 
 import com.example.dnd_combat_tracker.application.ports.EncounterRepositoryPort;
+import com.example.dnd_combat_tracker.application.usecases.CreateEncounterUseCase;
 import com.example.dnd_combat_tracker.domain.CombatEncounter;
 import org.junit.jupiter.api.Test;
 

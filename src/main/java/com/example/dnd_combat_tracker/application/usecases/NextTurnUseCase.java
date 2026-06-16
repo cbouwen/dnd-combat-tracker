@@ -1,4 +1,4 @@
-package com.example.dnd_combat_tracker.application;
+package com.example.dnd_combat_tracker.application.usecases;
 
 import com.example.dnd_combat_tracker.application.exceptions.EncounterNotFoundException;
 import com.example.dnd_combat_tracker.application.ports.EncounterRepositoryPort;
@@ -15,7 +15,7 @@ public class NextTurnUseCase {
     }
 
     public void execute(String encounterId) {
-        CombatEncounter encounter = encounterRepositoryPort.findById(encounterId).orElseThrow(() -> new EncounterNotFoundException("No encounter found for id: " + encounterId));
+        CombatEncounter encounter = encounterRepositoryPort.findById(encounterId).orElseThrow(() -> new EncounterNotFoundException(encounterId));
         encounter.nextTurn();
         encounterRepositoryPort.save(encounter);
     }

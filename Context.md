@@ -27,14 +27,7 @@ Combatants have three types: `PC`, `NPC`, `ENEMY`. When starting an encounter, P
 - **In-memory first** — architecture is clean enough to swap in JPA later without touching the domain.
 - **Single-user for now** — no authentication yet; multi-user is a known future concern.
 
-## Current State / TODOs
-
-### High priority (blocking further work)
-- [x] Delete `ActiveEncounterAlreadyExistsException` (unused)
-- [x] Refactor `StartEncounterUseCase` to accept `encounterId` and use `findById()` instead of `getActive()`
-- [x] Create `StartEncounterCommand`
-- [x] Refactor `NextTurnUseCase` to accept `encounterId` and use `findById()` instead of `getActive()`
-- [x] Fix use case tests that rely on `getActive()`
+## Current State
 
 ### Next endpoints to build
 - [ ] `GET /api/encounters/{id}` — view encounter state

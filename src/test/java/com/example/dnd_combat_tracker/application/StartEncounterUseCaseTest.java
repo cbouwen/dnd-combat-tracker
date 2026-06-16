@@ -2,6 +2,7 @@ package com.example.dnd_combat_tracker.application;
 
 import com.example.dnd_combat_tracker.application.commands.StartEncounterCommand;
 import com.example.dnd_combat_tracker.application.ports.EncounterRepositoryPort;
+import com.example.dnd_combat_tracker.application.usecases.StartEncounterUseCase;
 import com.example.dnd_combat_tracker.domain.CombatEncounter;
 import com.example.dnd_combat_tracker.domain.Combatant;
 import org.junit.jupiter.api.Test;

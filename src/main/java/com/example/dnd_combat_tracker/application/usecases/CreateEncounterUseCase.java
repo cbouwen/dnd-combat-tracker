@@ -1,4 +1,4 @@
-package com.example.dnd_combat_tracker.application;
+package com.example.dnd_combat_tracker.application.usecases;
 
 import com.example.dnd_combat_tracker.application.ports.EncounterRepositoryPort;
 import com.example.dnd_combat_tracker.domain.CombatEncounter;
