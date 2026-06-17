@@ -14,9 +14,10 @@ public class NextTurnUseCase {
         this.encounterRepositoryPort = encounterRepositoryPort;
     }
 
-    public void execute(String encounterId) {
+    public CombatEncounter execute(String encounterId) {
         CombatEncounter encounter = encounterRepositoryPort.findById(encounterId).orElseThrow(() -> new EncounterNotFoundException(encounterId));
         encounter.nextTurn();
         encounterRepositoryPort.save(encounter);
+        return encounter;
     }
 }

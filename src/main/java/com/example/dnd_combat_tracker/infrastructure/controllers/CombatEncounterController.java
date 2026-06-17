@@ -1,9 +1,6 @@
 package com.example.dnd_combat_tracker.infrastructure.controllers;
 
-import com.example.dnd_combat_tracker.application.usecases.AddCombatantUseCase;
-import com.example.dnd_combat_tracker.application.usecases.CreateEncounterUseCase;
-import com.example.dnd_combat_tracker.application.usecases.GetEncounterUseCase;
-import com.example.dnd_combat_tracker.application.usecases.StartEncounterUseCase;
+import com.example.dnd_combat_tracker.application.usecases.*;
 import com.example.dnd_combat_tracker.domain.CombatEncounter;
 import com.example.dnd_combat_tracker.domain.Combatant;
 import com.example.dnd_combat_tracker.infrastructure.dtos.AddCombatantRequest;
@@ -21,12 +18,14 @@ public class CombatEncounterController {
     private final AddCombatantUseCase addCombatantUseCase;
     private final StartEncounterUseCase startEncounterUseCase;
     private final GetEncounterUseCase getEncounterUseCase;
+    private final NextTurnUseCase nextTurnUseCase;
 
-    public CombatEncounterController(CreateEncounterUseCase createEncounterUseCase, AddCombatantUseCase addCombatantUseCase, StartEncounterUseCase startEncounterUseCase, GetEncounterUseCase getEncounterUseCase) {
+    public CombatEncounterController(CreateEncounterUseCase createEncounterUseCase, AddCombatantUseCase addCombatantUseCase, StartEncounterUseCase startEncounterUseCase, GetEncounterUseCase getEncounterUseCase, NextTurnUseCase nextTurnUseCase) {
         this.createEncounterUseCase = createEncounterUseCase;
         this.addCombatantUseCase = addCombatantUseCase;
         this.startEncounterUseCase = startEncounterUseCase;
         this.getEncounterUseCase = getEncounterUseCase;
+        this.nextTurnUseCase = nextTurnUseCase;
     }
 
     @PostMapping
@@ -50,6 +49,12 @@ public class CombatEncounterController {
     @PostMapping("/{id}/start")
     public ResponseEntity<CombatEncounterResponse> startEncounter(@RequestBody StartEncounterRequest startEncounterRequest, @PathVariable String id) {
         CombatEncounter combatEncounter = startEncounterUseCase.execute(startEncounterRequest.toCommand(id));
-        return ResponseEntity.status(HttpStatus.OK).body(CombatEncounterResponse.from(combatEncounter));
+        return ResponseEntity.ok(CombatEncounterResponse.from(combatEncounter));
+    }
+
+    @PostMapping("/{id}/next-turn")
+    public ResponseEntity<CombatEncounterResponse> nextTurn(@PathVariable String id) {
+        CombatEncounter combatEncounter = nextTurnUseCase.execute(id);
+        return ResponseEntity.ok(CombatEncounterResponse.from(combatEncounter));
     }
 }
