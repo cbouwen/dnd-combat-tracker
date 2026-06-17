@@ -37,3 +37,6 @@ Content-Type: application/json
     "<combatantId>": 18
   }
 }
+
+### Get encounter information
+GET http://localhost:8080/api/encounters/<encounter-id>

@@ -2,6 +2,7 @@ package com.example.dnd_combat_tracker.infrastructure.controllers;
 
 import com.example.dnd_combat_tracker.application.usecases.AddCombatantUseCase;
 import com.example.dnd_combat_tracker.application.usecases.CreateEncounterUseCase;
+import com.example.dnd_combat_tracker.application.usecases.GetEncounterUseCase;
 import com.example.dnd_combat_tracker.application.usecases.StartEncounterUseCase;
 import com.example.dnd_combat_tracker.domain.CombatEncounter;
 import com.example.dnd_combat_tracker.domain.Combatant;
@@ -19,17 +20,25 @@ public class CombatEncounterController {
     private final CreateEncounterUseCase createEncounterUseCase;
     private final AddCombatantUseCase addCombatantUseCase;
     private final StartEncounterUseCase startEncounterUseCase;
+    private final GetEncounterUseCase getEncounterUseCase;
 
-    public CombatEncounterController(CreateEncounterUseCase createEncounterUseCase, AddCombatantUseCase addCombatantUseCase, StartEncounterUseCase startEncounterUseCase) {
+    public CombatEncounterController(CreateEncounterUseCase createEncounterUseCase, AddCombatantUseCase addCombatantUseCase, StartEncounterUseCase startEncounterUseCase, GetEncounterUseCase getEncounterUseCase) {
         this.createEncounterUseCase = createEncounterUseCase;
         this.addCombatantUseCase = addCombatantUseCase;
         this.startEncounterUseCase = startEncounterUseCase;
+        this.getEncounterUseCase = getEncounterUseCase;
     }
 
     @PostMapping
     public ResponseEntity<CombatEncounterResponse> createEncounter() {
         CombatEncounter combatEncounter = createEncounterUseCase.execute();
         return ResponseEntity.status(HttpStatus.CREATED).body(CombatEncounterResponse.from(combatEncounter));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CombatEncounterResponse> getEncounter(@PathVariable("id") String id) {
+        CombatEncounter combatEncounter = getEncounterUseCase.execute(id);
+        return ResponseEntity.ok(CombatEncounterResponse.from(combatEncounter));
     }
 
     @PostMapping("/{id}/combatants")
