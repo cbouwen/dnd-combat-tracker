@@ -17,6 +17,8 @@ A **CombatEncounter** (aggregate root) holds a list of **Combatants** and moves 
 
 Combatants have three types: `PC`, `NPC`, `ENEMY`. When starting an encounter, PC initiatives are set by the player; NPCs/Enemies roll automatically (d20 + modifier). Combatants are then sorted by initiative descending, with type as a tiebreaker (PC > NPC > ENEMY).
 
+Multiple monsters with the same name can be added but trying to add a PC with an identical name as one already added will fail and throw an exception.
+
 ## API (current)
 - `POST /api/encounters` — create a new encounter
 - `POST /api/encounters/{id}/combatants` — add a combatant to an encounter
@@ -30,7 +32,7 @@ Combatants have three types: `PC`, `NPC`, `ENEMY`. When starting an encounter, P
 ## Current State
 
 ### Next endpoints to build
-- [ ] `GET /api/encounters/{id}` — view encounter state
+- [x] `GET /api/encounters/{id}` — view encounter state
 - [x] `POST /api/encounters/{id}/start` — start encounter
 - [ ] `POST /api/encounters/{id}/next-turn` — advance turn
 - [ ] `DELETE /api/encounters/{id}/combatants/{combatantId}` — remove combatant
