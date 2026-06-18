@@ -28,6 +28,9 @@ Content-Type: application/json
   "initiativeModifier": 3
 }
 
+### Remove a combatant
+DELETE http://localhost:8080/api/encounters/<encounter-id>/combatants/<combatant-id>
+
 ### Start the actual encounter
 POST http://localhost:8080/api/encounters/<encounter-id>/start
 Content-Type: application/json
