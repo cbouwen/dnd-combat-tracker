@@ -22,7 +22,15 @@ public class CombatEncounterController {
     private final RemoveCombatantUseCase removeCombatantUseCase;
     private final PreviousTurnUseCase previousTurnUseCase;
 
-    public CombatEncounterController(CreateEncounterUseCase createEncounterUseCase, AddCombatantUseCase addCombatantUseCase, StartEncounterUseCase startEncounterUseCase, GetEncounterUseCase getEncounterUseCase, NextTurnUseCase nextTurnUseCase, RemoveCombatantUseCase removeCombatantUseCase, PreviousTurnUseCase previousTurnUseCase) {
+    public CombatEncounterController(
+            CreateEncounterUseCase createEncounterUseCase,
+            AddCombatantUseCase addCombatantUseCase,
+            StartEncounterUseCase startEncounterUseCase,
+            GetEncounterUseCase getEncounterUseCase,
+            NextTurnUseCase nextTurnUseCase,
+            RemoveCombatantUseCase removeCombatantUseCase,
+            PreviousTurnUseCase previousTurnUseCase
+    ) {
         this.createEncounterUseCase = createEncounterUseCase;
         this.addCombatantUseCase = addCombatantUseCase;
         this.startEncounterUseCase = startEncounterUseCase;
