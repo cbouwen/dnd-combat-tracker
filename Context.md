@@ -35,7 +35,7 @@ Multiple monsters with the same name can be added but trying to add a PC with an
 - [x] `GET /api/encounters/{id}` — view encounter state
 - [x] `POST /api/encounters/{id}/start` — start encounter
 - [x] `POST /api/encounters/{id}/next-turn` — advance turn
-- [ ] `POST /api/encounters/{id}/previous-turn` — previous turn
+- [x] `POST /api/encounters/{id}/previous-turn` — previous turn
 - [x] `DELETE /api/encounters/{id}/combatants/{combatantId}` — remove combatant
 
 ### Future / deferred

@@ -41,5 +41,11 @@ Content-Type: application/json
   }
 }
 
+### Go to next turn
+POST http://localhost:8080/api/encounters/<encounter-id>/next-turn
+
+### Go to previous turn
+POST http://localhost:8080/api/encounters/<encounter-id>/previous-turn
+
 ### Get encounter information
 GET http://localhost:8080/api/encounters/<encounter-id>

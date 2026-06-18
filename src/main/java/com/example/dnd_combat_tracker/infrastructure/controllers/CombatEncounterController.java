@@ -20,14 +20,16 @@ public class CombatEncounterController {
     private final GetEncounterUseCase getEncounterUseCase;
     private final NextTurnUseCase nextTurnUseCase;
     private final RemoveCombatantUseCase removeCombatantUseCase;
+    private final PreviousTurnUseCase previousTurnUseCase;
 
-    public CombatEncounterController(CreateEncounterUseCase createEncounterUseCase, AddCombatantUseCase addCombatantUseCase, StartEncounterUseCase startEncounterUseCase, GetEncounterUseCase getEncounterUseCase, NextTurnUseCase nextTurnUseCase, RemoveCombatantUseCase removeCombatantUseCase) {
+    public CombatEncounterController(CreateEncounterUseCase createEncounterUseCase, AddCombatantUseCase addCombatantUseCase, StartEncounterUseCase startEncounterUseCase, GetEncounterUseCase getEncounterUseCase, NextTurnUseCase nextTurnUseCase, RemoveCombatantUseCase removeCombatantUseCase, PreviousTurnUseCase previousTurnUseCase) {
         this.createEncounterUseCase = createEncounterUseCase;
         this.addCombatantUseCase = addCombatantUseCase;
         this.startEncounterUseCase = startEncounterUseCase;
         this.getEncounterUseCase = getEncounterUseCase;
         this.nextTurnUseCase = nextTurnUseCase;
         this.removeCombatantUseCase = removeCombatantUseCase;
+        this.previousTurnUseCase = previousTurnUseCase;
     }
 
     @PostMapping
@@ -57,6 +59,12 @@ public class CombatEncounterController {
     @PostMapping("/{id}/next-turn")
     public ResponseEntity<CombatEncounterResponse> nextTurn(@PathVariable String id) {
         CombatEncounter combatEncounter = nextTurnUseCase.execute(id);
+        return ResponseEntity.ok(CombatEncounterResponse.from(combatEncounter));
+    }
+
+    @PostMapping("/{id}/previous-turn")
+    public ResponseEntity<CombatEncounterResponse> previousTurn(@PathVariable String id) {
+        CombatEncounter combatEncounter = previousTurnUseCase.execute(id);
         return ResponseEntity.ok(CombatEncounterResponse.from(combatEncounter));
     }
 
