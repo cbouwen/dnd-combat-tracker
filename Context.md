@@ -38,7 +38,7 @@ Multiple monsters with the same name can be added but trying to add a PC with an
 
 ### TODO
 -  [x] Give all custom exceptions http exceptions
-- [ ] Check if current turn should return combatant?
+- [x] CombatEncounterResponse returns combatantID to display current turns combatant
 - [x] Move CombatantNotFoundException to domain and fix leakage of StartEncounterUseCase
 
 ### Next endpoints to build

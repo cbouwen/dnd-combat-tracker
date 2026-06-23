@@ -157,6 +157,13 @@ public class CombatEncounter {
         return ThreadLocalRandom.current().nextInt(1, 21);
     }
 
+    public String getCurrentCombatantId() {
+        if (state != EncounterState.ACTIVE) {
+            throw new EncounterNotActiveException("Encounter is not active");
+        }
+        return combatants.get(currentTurn).getId();
+    }
+
     public String getId() {
         return id;
     }

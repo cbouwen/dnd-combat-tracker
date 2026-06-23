@@ -8,6 +8,7 @@ public record CombatEncounterResponse(
         String id,
         String encounterState,
         int currentTurn,
+        String currentCombatantId,
         List<CombatantResponse> combatants
 ) {
     public static CombatEncounterResponse from(CombatEncounter encounter) {
@@ -15,6 +16,7 @@ public record CombatEncounterResponse(
                 encounter.getId(),
                 encounter.getState().toString(),
                 encounter.getCurrentTurn(),
+                encounter.getCurrentCombatantId(),
                 encounter.getCombatants().stream()
                         .map(CombatantResponse::from)
                         .toList()
