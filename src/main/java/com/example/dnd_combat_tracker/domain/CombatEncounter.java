@@ -85,6 +85,22 @@ public class CombatEncounter {
         this.combatants.add(newCombatant);
     }
 
+    public void damageCombatant(String combatantId, int damage) {
+        if (state != EncounterState.ACTIVE) {
+            throw new EncounterNotActiveException("Encounter is not active");
+        }
+        Combatant combatant = findCombatantById(combatantId).orElseThrow(() -> new CombatantNotFoundException(combatantId));
+        combatant.takeDamage(damage);
+    }
+
+    public void healCombatant(String combatantId, int healAmount) {
+        if (state != EncounterState.ACTIVE) {
+            throw new EncounterNotActiveException("Encounter is not active");
+        }
+        Combatant combatant = findCombatantById(combatantId).orElseThrow(() -> new CombatantNotFoundException(combatantId));
+        combatant.heal(healAmount);
+    }
+
     public void removeCombatantById(String combatantId) {
         Combatant combatant = findCombatantById(combatantId)
                 .orElseThrow(() -> new CombatantNotFoundException(combatantId));

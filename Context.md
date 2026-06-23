@@ -20,8 +20,13 @@ Combatants have three types: `PC`, `NPC`, `ENEMY`. When starting an encounter, P
 Multiple monsters with the same name can be added but trying to add a PC with an identical name as one already added will fail and throw an exception.
 
 ## API (current)
-- `POST /api/encounters` — create a new encounter
-- `POST /api/encounters/{id}/combatants` — add a combatant to an encounter
+- `POST /api/encounters` → 201 + CombatEncounterResponse (creates empty encounter in SETUP)
+- `POST /api/encounters/{id}/combatants` → 201 + CombatantResponse (add combatant)
+- `POST /api/encounters/{id}/start` → 200 + CombatEncounterResponse (start encounter, sets initiatives, sorts)
+- `POST /api/encounters/{id}/next-turn` → 200 + CombatEncounterResponse (advance turn)
+- `POST /api/encounters/{id}/previous-turn` → 200 + CombatEncounterResponse (go back one turn)
+- `GET /api/encounters/{id}` → 200 + CombatEncounterResponse (view encounter state)
+- `DELETE /api/encounters/{id}/combatants/{combatantId}` → 204 No Content (remove combatant)
 
 ## Key Design Decisions
 - **Encounter IDs everywhere** — endpoints use `/encounters/{id}/...` to support multiple concurrent encounters and make multi-user support easier later.
@@ -31,12 +36,16 @@ Multiple monsters with the same name can be added but trying to add a PC with an
 
 ## Current State
 
+### TODO
+-  [ ] Give all custom exceptions http exceptions
+- [ ] Check if current turn should return combatant?
+- [ ] Move CombatantNotFoundException to domain and fix leakage of StartEncounterUseCase
+
 ### Next endpoints to build
-- [x] `GET /api/encounters/{id}` — view encounter state
-- [x] `POST /api/encounters/{id}/start` — start encounter
-- [x] `POST /api/encounters/{id}/next-turn` — advance turn
-- [x] `POST /api/encounters/{id}/previous-turn` — previous turn
-- [x] `DELETE /api/encounters/{id}/combatants/{combatantId}` — remove combatant
+- [ ] `POST /api/encounters/{id}/combatants/{combatantId}/damage` - Deal damage
+- [ ] `POST /api/encounters/{id}/combatants/{combatantId}/heal` - Heal combatant
+- [ ] `POST /api/encounters/{id}/end` - End encounter
+- [ ] `GET /api/encounters` - List all encounters
 
 ### Future / deferred
 - [ ] Spring Security + authentication

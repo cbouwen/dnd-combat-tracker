@@ -3,10 +3,7 @@ package com.example.dnd_combat_tracker.infrastructure.controllers;
 import com.example.dnd_combat_tracker.application.usecases.*;
 import com.example.dnd_combat_tracker.domain.CombatEncounter;
 import com.example.dnd_combat_tracker.domain.Combatant;
-import com.example.dnd_combat_tracker.infrastructure.dtos.AddCombatantRequest;
-import com.example.dnd_combat_tracker.infrastructure.dtos.CombatEncounterResponse;
-import com.example.dnd_combat_tracker.infrastructure.dtos.CombatantResponse;
-import com.example.dnd_combat_tracker.infrastructure.dtos.StartEncounterRequest;
+import com.example.dnd_combat_tracker.infrastructure.dtos.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +18,8 @@ public class CombatEncounterController {
     private final NextTurnUseCase nextTurnUseCase;
     private final RemoveCombatantUseCase removeCombatantUseCase;
     private final PreviousTurnUseCase previousTurnUseCase;
+    private final DealDamageUseCase dealDamageUseCase;
+    private final HealDamageUseCase healDamageUseCase;
 
     public CombatEncounterController(
             CreateEncounterUseCase createEncounterUseCase,
@@ -29,7 +28,9 @@ public class CombatEncounterController {
             GetEncounterUseCase getEncounterUseCase,
             NextTurnUseCase nextTurnUseCase,
             RemoveCombatantUseCase removeCombatantUseCase,
-            PreviousTurnUseCase previousTurnUseCase
+            PreviousTurnUseCase previousTurnUseCase,
+            DealDamageUseCase dealDamageUseCase,
+            HealDamageUseCase healDamageUseCase
     ) {
         this.createEncounterUseCase = createEncounterUseCase;
         this.addCombatantUseCase = addCombatantUseCase;
@@ -38,6 +39,8 @@ public class CombatEncounterController {
         this.nextTurnUseCase = nextTurnUseCase;
         this.removeCombatantUseCase = removeCombatantUseCase;
         this.previousTurnUseCase = previousTurnUseCase;
+        this.dealDamageUseCase = dealDamageUseCase;
+        this.healDamageUseCase = healDamageUseCase;
     }
 
     @PostMapping
@@ -73,6 +76,26 @@ public class CombatEncounterController {
     @PostMapping("/{id}/previous-turn")
     public ResponseEntity<CombatEncounterResponse> previousTurn(@PathVariable String id) {
         CombatEncounter combatEncounter = previousTurnUseCase.execute(id);
+        return ResponseEntity.ok(CombatEncounterResponse.from(combatEncounter));
+    }
+
+    @PostMapping("/{encounterId}/combatants/{combatantId}/damage")
+    public ResponseEntity<CombatEncounterResponse> dealDamage(
+            @RequestBody DealDamageRequest dealDamageRequest,
+            @PathVariable String encounterId,
+            @PathVariable String combatantId
+    ) {
+        CombatEncounter combatEncounter = dealDamageUseCase.execute(encounterId, combatantId, dealDamageRequest.amount());
+        return ResponseEntity.ok(CombatEncounterResponse.from(combatEncounter));
+    }
+
+    @PostMapping("/{encounterId}/combatants/{combatantId}/heal")
+    public ResponseEntity<CombatEncounterResponse> healDamage(
+            @RequestBody HealRequest healRequest,
+            @PathVariable String encounterId,
+            @PathVariable String combatantId
+    ) {
+        CombatEncounter combatEncounter = healDamageUseCase.execute(encounterId, combatantId, healRequest.amount());
         return ResponseEntity.ok(CombatEncounterResponse.from(combatEncounter));
     }
 
