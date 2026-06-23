@@ -1,7 +1,9 @@
 package com.example.dnd_combat_tracker.infrastructure.controlleradvice;
 
+import com.example.dnd_combat_tracker.application.exceptions.TemplateIdRequiredException;
 import com.example.dnd_combat_tracker.domain.exceptions.CombatantNotFoundException;
 import com.example.dnd_combat_tracker.application.exceptions.EncounterNotFoundException;
+import com.example.dnd_combat_tracker.domain.exceptions.EncounterNotActiveException;
 import com.example.dnd_combat_tracker.domain.exceptions.NotAllInitiativesSetException;
 import com.example.dnd_combat_tracker.domain.exceptions.DuplicatePlayerException;
 import org.springframework.http.HttpStatus;
@@ -41,6 +43,22 @@ public class RestExceptionHandler {
     protected ResponseEntity<String> handleDuplicatePlayerAdded(DuplicatePlayerException ex) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
+                .header("Content-Type", MediaType.TEXT_PLAIN_VALUE)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(TemplateIdRequiredException.class)
+    protected ResponseEntity<String> handleNoTemplateId(TemplateIdRequiredException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .header("Content-Type", MediaType.TEXT_PLAIN_VALUE)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler(EncounterNotActiveException.class)
+    protected ResponseEntity<String> handleEncounterNotActive(EncounterNotActiveException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
                 .header("Content-Type", MediaType.TEXT_PLAIN_VALUE)
                 .body(ex.getMessage());
     }
