@@ -1,8 +1,8 @@
 package com.example.dnd_combat_tracker.infrastructure.controlleradvice;
 
-import com.example.dnd_combat_tracker.application.exceptions.CombatantNotFoundException;
+import com.example.dnd_combat_tracker.domain.exceptions.CombatantNotFoundException;
 import com.example.dnd_combat_tracker.application.exceptions.EncounterNotFoundException;
-import com.example.dnd_combat_tracker.application.exceptions.NotAllInitiativesSetException;
+import com.example.dnd_combat_tracker.domain.exceptions.NotAllInitiativesSetException;
 import com.example.dnd_combat_tracker.domain.exceptions.DuplicatePlayerException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

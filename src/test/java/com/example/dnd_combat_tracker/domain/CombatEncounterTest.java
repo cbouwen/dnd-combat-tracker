@@ -1,7 +1,7 @@
 package com.example.dnd_combat_tracker.domain;
 
-import com.example.dnd_combat_tracker.application.exceptions.CombatantNotFoundException;
-import com.example.dnd_combat_tracker.application.exceptions.NotAllInitiativesSetException;
+import com.example.dnd_combat_tracker.domain.exceptions.CombatantNotFoundException;
+import com.example.dnd_combat_tracker.domain.exceptions.NotAllInitiativesSetException;
 import com.example.dnd_combat_tracker.domain.exceptions.EncounterNotActiveException;
 import org.junit.jupiter.api.Test;
 

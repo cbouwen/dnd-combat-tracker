@@ -39,13 +39,13 @@ Multiple monsters with the same name can be added but trying to add a PC with an
 ### TODO
 -  [ ] Give all custom exceptions http exceptions
 - [ ] Check if current turn should return combatant?
-- [ ] Move CombatantNotFoundException to domain and fix leakage of StartEncounterUseCase
+- [x] Move CombatantNotFoundException to domain and fix leakage of StartEncounterUseCase
 
 ### Next endpoints to build
-- [ ] `POST /api/encounters/{id}/combatants/{combatantId}/damage` - Deal damage
-- [ ] `POST /api/encounters/{id}/combatants/{combatantId}/heal` - Heal combatant
+- [x] `POST /api/encounters/{id}/combatants/{combatantId}/damage` - Deal damage
+- [x] `POST /api/encounters/{id}/combatants/{combatantId}/heal` - Heal combatant
 - [ ] `POST /api/encounters/{id}/end` - End encounter
-- [ ] `GET /api/encounters` - List all encounters
+- [x] `GET /api/encounters` - List all encounters
 
 ### Future / deferred
 - [ ] Spring Security + authentication

@@ -1,14 +1,16 @@
 package com.example.dnd_combat_tracker.domain;
 
-import com.example.dnd_combat_tracker.application.exceptions.CombatantNotFoundException;
+import com.example.dnd_combat_tracker.domain.exceptions.CombatantNotFoundException;
 import com.example.dnd_combat_tracker.domain.exceptions.DuplicatePlayerException;
-import com.example.dnd_combat_tracker.application.exceptions.NotAllInitiativesSetException;
+import com.example.dnd_combat_tracker.domain.exceptions.NotAllInitiativesSetException;
 import com.example.dnd_combat_tracker.domain.exceptions.EncounterNotActiveException;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class CombatEncounter {
     private final String id;
@@ -58,6 +60,29 @@ public class CombatEncounter {
         }
         sortByInitiative();
         this.state = EncounterState.ACTIVE;
+    }
+
+    public void setInitiatives(Map<String, Integer> playerInitiatives) {
+        combatants.stream()
+                .filter(c -> c.getType() == CombatantType.PC)
+                .forEach(pc -> {
+                    if (!playerInitiatives.containsKey(pc.getId())) {
+                        throw new NotAllInitiativesSetException("Missing initiative for PC: " + pc.getName());
+                    }
+                });
+
+        playerInitiatives.forEach((combatantId, initiative) -> {
+            Combatant combatant = findCombatantById(combatantId)
+                    .orElseThrow(() -> new CombatantNotFoundException(combatantId));
+            if (initiative == null) {
+                throw new NotAllInitiativesSetException("Initiative cannot be null for combatant: " + combatantId);
+            }
+            combatant.setInitiative(initiative);
+        });
+
+        combatants.stream()
+                .filter(c -> c.getType() != CombatantType.PC)
+                .forEach(c -> c.setInitiative(rollD20()));
     }
 
     public void endEncounter() {
@@ -126,6 +151,10 @@ public class CombatEncounter {
         if (this.state != EncounterState.ACTIVE)
             throw new EncounterNotActiveException("Encounter is not active");
         this.currentTurn = (this.currentTurn - 1 + combatants.size()) % combatants.size();
+    }
+
+    private static int rollD20() {
+        return ThreadLocalRandom.current().nextInt(1, 21);
     }
 
     public String getId() {
