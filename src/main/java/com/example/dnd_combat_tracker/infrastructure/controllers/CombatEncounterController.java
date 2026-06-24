@@ -1,6 +1,5 @@
 package com.example.dnd_combat_tracker.infrastructure.controllers;
 
-import com.example.dnd_combat_tracker.application.ports.EncounterRepositoryPort;
 import com.example.dnd_combat_tracker.application.usecases.*;
 import com.example.dnd_combat_tracker.domain.CombatEncounter;
 import com.example.dnd_combat_tracker.domain.Combatant;
@@ -24,7 +23,7 @@ public class CombatEncounterController {
     private final DealDamageUseCase dealDamageUseCase;
     private final HealDamageUseCase healDamageUseCase;
     private final EndEncounterUseCase endEncounterUseCase;
-    private final EncounterRepositoryPort encounterRepositoryPort;
+    private final GetAllEncountersUseCase getAllEncountersUseCase;
 
     public CombatEncounterController(
             CreateEncounterUseCase createEncounterUseCase,
@@ -37,7 +36,7 @@ public class CombatEncounterController {
             DealDamageUseCase dealDamageUseCase,
             HealDamageUseCase healDamageUseCase,
             EndEncounterUseCase endEncounterUseCase,
-            EncounterRepositoryPort encounterRepositoryPort
+            GetAllEncountersUseCase getAllEncountersUseCase
     ) {
         this.createEncounterUseCase = createEncounterUseCase;
         this.addCombatantUseCase = addCombatantUseCase;
@@ -49,7 +48,7 @@ public class CombatEncounterController {
         this.dealDamageUseCase = dealDamageUseCase;
         this.healDamageUseCase = healDamageUseCase;
         this.endEncounterUseCase = endEncounterUseCase;
-        this.encounterRepositoryPort = encounterRepositoryPort;
+        this.getAllEncountersUseCase = getAllEncountersUseCase;
     }
 
     @PostMapping
@@ -59,15 +58,14 @@ public class CombatEncounterController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CombatEncounterResponse> getEncounter(@PathVariable("id") String id) {
+    public ResponseEntity<CombatEncounterResponse> getEncounter(@PathVariable String id) {
         CombatEncounter combatEncounter = getEncounterUseCase.execute(id);
         return ResponseEntity.ok(CombatEncounterResponse.from(combatEncounter));
     }
 
     @GetMapping()
     public ResponseEntity<List<CombatEncounterResponse>> getEncounters() {
-        List<CombatEncounter> encounters = encounterRepositoryPort.findAll();
-        List<CombatEncounterResponse> combatEncounterResponses = encounters.stream().map(CombatEncounterResponse::from).toList();
+        List<CombatEncounterResponse> combatEncounterResponses = getAllEncountersUseCase.execute().stream().map(CombatEncounterResponse::from).toList();
         return ResponseEntity.ok(combatEncounterResponses);
     }
 
