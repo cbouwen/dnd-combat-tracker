@@ -6,6 +6,7 @@ import com.example.dnd_combat_tracker.domain.exceptions.EncounterNotActiveExcept
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -61,7 +62,7 @@ class CombatEncounterTest {
     @Test
     void nextTurnShouldGoToNextTurn() {
         CombatEncounter combatEncounter = createBasicEncounter();
-        combatEncounter.startEncounter();
+        combatEncounter.startEncounter(defaultInitiatives());
 
         combatEncounter.nextTurn();
 
@@ -71,7 +72,7 @@ class CombatEncounterTest {
     @Test
     void nextTurnOnFinalCombatantShouldRestartTurnIndex() {
         CombatEncounter combatEncounter = createBasicEncounter();
-        combatEncounter.startEncounter();
+        combatEncounter.startEncounter(defaultInitiatives());
         combatEncounter.nextTurn();
         combatEncounter.nextTurn();
 
@@ -90,7 +91,7 @@ class CombatEncounterTest {
     @Test
     void previousTurnShouldDialBackTurn() {
         CombatEncounter combatEncounter = createBasicEncounter();
-        combatEncounter.startEncounter();
+        combatEncounter.startEncounter(defaultInitiatives());
 
         combatEncounter.previousTurn();
 
@@ -106,7 +107,7 @@ class CombatEncounterTest {
         );
         CombatEncounter combatEncounter = CombatEncounter.createWithCombatants("1800", combatants);
 
-        assertThrows(NotAllInitiativesSetException.class, combatEncounter::startEncounter);
+        assertThrows(NotAllInitiativesSetException.class, () -> combatEncounter.startEncounter(Map.of()));
     }
 
     @Test
@@ -117,11 +118,7 @@ class CombatEncounterTest {
                 Combatant.createPlayer("3", "Inhil", 15, 11, 2)
         );
         CombatEncounter combatEncounter = CombatEncounter.createWithCombatants("1800", combatants);
-        combatEncounter.findCombatantById("1").orElseThrow(() -> new CombatantNotFoundException("1")).setInitiative(15);
-        combatEncounter.findCombatantById("2").orElseThrow(() -> new CombatantNotFoundException("2")).setInitiative(10);
-        combatEncounter.findCombatantById("3").orElseThrow(() -> new CombatantNotFoundException("3")).setInitiative(20);
-
-        combatEncounter.startEncounter();
+        combatEncounter.startEncounter(Map.of("1", 15, "2", 10, "3", 20));
 
         List<Combatant> sorted = combatEncounter.getCombatants();
         assertThat(sorted.get(0).getId()).isEqualTo("3");
@@ -140,7 +137,7 @@ class CombatEncounterTest {
     @Test
     void endEncounterShouldChangeStateToEnded() {
         CombatEncounter combatEncounter = createBasicEncounter();
-        combatEncounter.startEncounter();
+        combatEncounter.startEncounter(defaultInitiatives());
 
         combatEncounter.endEncounter();
 
@@ -153,8 +150,10 @@ class CombatEncounterTest {
                 Combatant.createPlayer("2", "Solid", 30, 18, 1),
                 Combatant.createPlayer("3", "Inhil", 30, 11, 2)
         );
-        CombatEncounter combatEncounter = CombatEncounter.createWithCombatants("1800", combatants);
-        combatEncounter.getCombatants().forEach(combatant -> combatant.setInitiative(15));
-        return combatEncounter;
+        return CombatEncounter.createWithCombatants("1800", combatants);
+    }
+
+    private Map<String, Integer> defaultInitiatives() {
+        return Map.of("1", 15, "2", 15, "3", 15);
     }
 }

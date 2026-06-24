@@ -19,8 +19,7 @@ public class StartEncounterUseCase {
         CombatEncounter combatEncounter = this.encounterRepositoryPort.findById(startEncounterCommand.encounterId())
                 .orElseThrow(() -> new EncounterNotFoundException(startEncounterCommand.encounterId()));
 
-        combatEncounter.setInitiatives(startEncounterCommand.playerInitiatives());
-        combatEncounter.startEncounter();
+        combatEncounter.startEncounter(startEncounterCommand.playerInitiatives());
         this.encounterRepositoryPort.save(combatEncounter);
         return combatEncounter;
     }

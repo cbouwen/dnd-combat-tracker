@@ -54,35 +54,35 @@ public class CombatEncounter {
         );
     }
 
-    public void startEncounter() {
-        if (combatants.stream().anyMatch(c -> c.getInitiative() == null)) {
-            throw new NotAllInitiativesSetException("Not all initiatives have been set");
-        }
+    public void startEncounter(Map<String, Integer> playerInitiatives) {
+        setInitiatives(playerInitiatives);
         sortByInitiative();
         this.state = EncounterState.ACTIVE;
     }
 
-    public void setInitiatives(Map<String, Integer> playerInitiatives) {
+    private void setInitiatives(Map<String, Integer> playerInitiatives) {
         combatants.stream()
                 .filter(c -> c.getType() == CombatantType.PC)
                 .forEach(pc -> {
-                    if (!playerInitiatives.containsKey(pc.getId())) {
-                        throw new NotAllInitiativesSetException("Missing initiative for PC: " + pc.getName());
+                    Integer initiative = playerInitiatives.get(pc.getId());
+                    if (initiative == null) {
+                        throw new NotAllInitiativesSetException("Missing or null initiative for PC: " + pc.getName());
                     }
+                    pc.setInitiative(initiative);
                 });
-
-        playerInitiatives.forEach((combatantId, initiative) -> {
-            Combatant combatant = findCombatantById(combatantId)
-                    .orElseThrow(() -> new CombatantNotFoundException(combatantId));
-            if (initiative == null) {
-                throw new NotAllInitiativesSetException("Initiative cannot be null for combatant: " + combatantId);
-            }
-            combatant.setInitiative(initiative);
-        });
 
         combatants.stream()
                 .filter(c -> c.getType() != CombatantType.PC)
                 .forEach(c -> c.setInitiative(rollD20()));
+    }
+
+    private void sortByInitiative() {
+        combatants.sort(
+                Comparator.comparing(Combatant::getInitiative)
+                        .thenComparing(c -> c.getType().getPriority())
+                        .thenComparing(Combatant::getInitiativeModifier)
+                        .reversed()
+        );
     }
 
     public void endEncounter() {
@@ -131,15 +131,6 @@ public class CombatEncounter {
         }
         Combatant combatant = findCombatantById(combatantId).orElseThrow(() -> new CombatantNotFoundException(combatantId));
         combatant.heal(healAmount);
-    }
-
-    private void sortByInitiative() {
-        combatants.sort(
-                Comparator.comparing(Combatant::getInitiative)
-                        .thenComparing(c -> c.getType().getPriority())
-                        .thenComparing(Combatant::getInitiativeModifier)
-                        .reversed()
-        );
     }
 
     public void nextTurn() {
