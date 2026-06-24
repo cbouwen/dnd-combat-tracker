@@ -45,13 +45,17 @@ Content-Type: application/json
 POST http://localhost:8080/api/encounters/<encounter-id>/combatants/<combatant-id>/damage
 Content-type: application/json
 
-5
+{
+  "amount": 5
+}
 
 ### Heal a combatant
 POST http://localhost:8080/api/encounters/<encounter-id>/combatants/<combatant-id>/heal
 Content-type: application/json
 
-5
+{
+  "amount": 5
+}
 
 ### Go to next turn
 POST http://localhost:8080/api/encounters/<encounter-id>/next-turn
