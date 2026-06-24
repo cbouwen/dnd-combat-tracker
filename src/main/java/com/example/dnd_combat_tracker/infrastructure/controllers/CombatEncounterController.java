@@ -20,6 +20,7 @@ public class CombatEncounterController {
     private final PreviousTurnUseCase previousTurnUseCase;
     private final DealDamageUseCase dealDamageUseCase;
     private final HealDamageUseCase healDamageUseCase;
+    private final EndEncounterUseCase endEncounterUseCase;
 
     public CombatEncounterController(
             CreateEncounterUseCase createEncounterUseCase,
@@ -30,7 +31,8 @@ public class CombatEncounterController {
             RemoveCombatantUseCase removeCombatantUseCase,
             PreviousTurnUseCase previousTurnUseCase,
             DealDamageUseCase dealDamageUseCase,
-            HealDamageUseCase healDamageUseCase
+            HealDamageUseCase healDamageUseCase,
+            EndEncounterUseCase endEncounterUseCase
     ) {
         this.createEncounterUseCase = createEncounterUseCase;
         this.addCombatantUseCase = addCombatantUseCase;
@@ -41,6 +43,7 @@ public class CombatEncounterController {
         this.previousTurnUseCase = previousTurnUseCase;
         this.dealDamageUseCase = dealDamageUseCase;
         this.healDamageUseCase = healDamageUseCase;
+        this.endEncounterUseCase = endEncounterUseCase;
     }
 
     @PostMapping
@@ -96,6 +99,12 @@ public class CombatEncounterController {
             @PathVariable String combatantId
     ) {
         CombatEncounter combatEncounter = healDamageUseCase.execute(encounterId, combatantId, healRequest.amount());
+        return ResponseEntity.ok(CombatEncounterResponse.from(combatEncounter));
+    }
+
+    @PostMapping("/{encounterId}/end")
+    public ResponseEntity<CombatEncounterResponse> endEncounter(@PathVariable String encounterId) {
+        CombatEncounter combatEncounter = endEncounterUseCase.execute(encounterId);
         return ResponseEntity.ok(CombatEncounterResponse.from(combatEncounter));
     }
 

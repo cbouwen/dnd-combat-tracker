@@ -65,3 +65,6 @@ POST http://localhost:8080/api/encounters/<encounter-id>/previous-turn
 
 ### Get encounter information
 GET http://localhost:8080/api/encounters/<encounter-id>
+
+### End an encounter
+POST http://localhost:8080/api/encounters/<encounter-id>/end

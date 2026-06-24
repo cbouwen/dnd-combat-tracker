@@ -21,12 +21,15 @@ Multiple monsters with the same name can be added but trying to add a PC with an
 
 ## API (current)
 - `POST /api/encounters` → 201 + CombatEncounterResponse (creates empty encounter in SETUP)
+- `GET /api/encounters/{id}` → 200 + CombatEncounterResponse (view encounter state)
 - `POST /api/encounters/{id}/combatants` → 201 + CombatantResponse (add combatant)
+- `DELETE /api/encounters/{encounterId}/combatants/{combatantId}` → 204 No Content (remove combatant)
 - `POST /api/encounters/{id}/start` → 200 + CombatEncounterResponse (start encounter, sets initiatives, sorts)
 - `POST /api/encounters/{id}/next-turn` → 200 + CombatEncounterResponse (advance turn)
 - `POST /api/encounters/{id}/previous-turn` → 200 + CombatEncounterResponse (go back one turn)
-- `GET /api/encounters/{id}` → 200 + CombatEncounterResponse (view encounter state)
-- `DELETE /api/encounters/{id}/combatants/{combatantId}` → 204 No Content (remove combatant)
+- `POST /api/encounters/{encounterId}/combatants/{combatantId}/damage` → 200 + CombatEncounterResponse (deal damage to combatant)
+- `POST /api/encounters/{encounterId}/combatants/{combatantId}/heal` → 200 + CombatEncounterResponse (heal combatant)
+- `POST /api/encounters/{encounterId}/end` → 200 + CombatEncounterResponse (end encounter)
 
 ## Key Design Decisions
 - **Encounter IDs everywhere** — endpoints use `/encounters/{id}/...` to support multiple concurrent encounters and make multi-user support easier later.
@@ -37,15 +40,10 @@ Multiple monsters with the same name can be added but trying to add a PC with an
 ## Current State
 
 ### TODO
--  [x] Give all custom exceptions http exceptions
-- [x] CombatEncounterResponse returns combatantID to display current turns combatant
-- [x] Move CombatantNotFoundException to domain and fix leakage of StartEncounterUseCase
+
 
 ### Next endpoints to build
-- [x] `POST /api/encounters/{id}/combatants/{combatantId}/damage` - Deal damage
-- [x] `POST /api/encounters/{id}/combatants/{combatantId}/heal` - Heal combatant
-- [ ] `POST /api/encounters/{id}/end` - End encounter
-- [x] `GET /api/encounters` - List all encounters
+- [ ] `GET /api/encounters` - List all encounters
 
 ### Future / deferred
 - [ ] Spring Security + authentication

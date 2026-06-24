@@ -95,6 +95,13 @@ public class CombatEncounter {
                 .findFirst();
     }
 
+    public String getCurrentCombatantId() {
+        if (state != EncounterState.ACTIVE) {
+            throw new EncounterNotActiveException("Encounter is not active");
+        }
+        return combatants.get(currentTurn).getId();
+    }
+
     public void addCombatant(Combatant newCombatant) {
         if (state == EncounterState.ENDED) {
             throw new EncounterNotActiveException("Cannot add combatant to ended encounter");
@@ -126,12 +133,6 @@ public class CombatEncounter {
         combatant.heal(healAmount);
     }
 
-    public void removeCombatantById(String combatantId) {
-        Combatant combatant = findCombatantById(combatantId)
-                .orElseThrow(() -> new CombatantNotFoundException(combatantId));
-        this.combatants.remove(combatant);
-    }
-
     private void sortByInitiative() {
         combatants.sort(
                 Comparator.comparing(Combatant::getInitiative)
@@ -153,15 +154,14 @@ public class CombatEncounter {
         this.currentTurn = (this.currentTurn - 1 + combatants.size()) % combatants.size();
     }
 
-    private static int rollD20() {
-        return ThreadLocalRandom.current().nextInt(1, 21);
+    public void removeCombatantById(String combatantId) {
+        Combatant combatant = findCombatantById(combatantId)
+                .orElseThrow(() -> new CombatantNotFoundException(combatantId));
+        this.combatants.remove(combatant);
     }
 
-    public String getCurrentCombatantId() {
-        if (state != EncounterState.ACTIVE) {
-            throw new EncounterNotActiveException("Encounter is not active");
-        }
-        return combatants.get(currentTurn).getId();
+    private static int rollD20() {
+        return ThreadLocalRandom.current().nextInt(1, 21);
     }
 
     public String getId() {
