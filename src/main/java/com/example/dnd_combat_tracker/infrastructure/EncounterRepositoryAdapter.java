@@ -4,9 +4,7 @@ import com.example.dnd_combat_tracker.application.ports.EncounterRepositoryPort;
 import com.example.dnd_combat_tracker.domain.CombatEncounter;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class EncounterRepositoryAdapter implements EncounterRepositoryPort {
@@ -25,5 +23,10 @@ public class EncounterRepositoryAdapter implements EncounterRepositoryPort {
     @Override
     public void clear() {
         encounters.clear();
+    }
+
+    @Override
+    public List<CombatEncounter> findAll() {
+        return new ArrayList<>(encounters.values());
     }
 }

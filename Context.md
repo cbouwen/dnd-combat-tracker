@@ -30,6 +30,7 @@ Multiple monsters with the same name can be added but trying to add a PC with an
 - `POST /api/encounters/{encounterId}/combatants/{combatantId}/damage` → 200 + CombatEncounterResponse (deal damage to combatant)
 - `POST /api/encounters/{encounterId}/combatants/{combatantId}/heal` → 200 + CombatEncounterResponse (heal combatant)
 - `POST /api/encounters/{encounterId}/end` → 200 + CombatEncounterResponse (end encounter)
+- `GET /api/encounters` - 200 + List<CombatEncounterResponse> (List all encounters)
 
 ## Key Design Decisions
 - **Encounter IDs everywhere** — endpoints use `/encounters/{id}/...` to support multiple concurrent encounters and make multi-user support easier later.
@@ -41,9 +42,6 @@ Multiple monsters with the same name can be added but trying to add a PC with an
 
 ### TODO
 
-
-### Next endpoints to build
-- [ ] `GET /api/encounters` - List all encounters
 
 ### Future / deferred
 - [ ] Spring Security + authentication

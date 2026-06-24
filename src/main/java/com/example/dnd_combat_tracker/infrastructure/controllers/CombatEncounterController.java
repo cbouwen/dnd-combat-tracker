@@ -1,5 +1,6 @@
 package com.example.dnd_combat_tracker.infrastructure.controllers;
 
+import com.example.dnd_combat_tracker.application.ports.EncounterRepositoryPort;
 import com.example.dnd_combat_tracker.application.usecases.*;
 import com.example.dnd_combat_tracker.domain.CombatEncounter;
 import com.example.dnd_combat_tracker.domain.Combatant;
@@ -7,6 +8,8 @@ import com.example.dnd_combat_tracker.infrastructure.dtos.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/encounters")
@@ -21,6 +24,7 @@ public class CombatEncounterController {
     private final DealDamageUseCase dealDamageUseCase;
     private final HealDamageUseCase healDamageUseCase;
     private final EndEncounterUseCase endEncounterUseCase;
+    private final EncounterRepositoryPort encounterRepositoryPort;
 
     public CombatEncounterController(
             CreateEncounterUseCase createEncounterUseCase,
@@ -32,7 +36,8 @@ public class CombatEncounterController {
             PreviousTurnUseCase previousTurnUseCase,
             DealDamageUseCase dealDamageUseCase,
             HealDamageUseCase healDamageUseCase,
-            EndEncounterUseCase endEncounterUseCase
+            EndEncounterUseCase endEncounterUseCase,
+            EncounterRepositoryPort encounterRepositoryPort
     ) {
         this.createEncounterUseCase = createEncounterUseCase;
         this.addCombatantUseCase = addCombatantUseCase;
@@ -44,6 +49,7 @@ public class CombatEncounterController {
         this.dealDamageUseCase = dealDamageUseCase;
         this.healDamageUseCase = healDamageUseCase;
         this.endEncounterUseCase = endEncounterUseCase;
+        this.encounterRepositoryPort = encounterRepositoryPort;
     }
 
     @PostMapping
@@ -56,6 +62,13 @@ public class CombatEncounterController {
     public ResponseEntity<CombatEncounterResponse> getEncounter(@PathVariable("id") String id) {
         CombatEncounter combatEncounter = getEncounterUseCase.execute(id);
         return ResponseEntity.ok(CombatEncounterResponse.from(combatEncounter));
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<CombatEncounterResponse>> getEncounters() {
+        List<CombatEncounter> encounters = encounterRepositoryPort.findAll();
+        List<CombatEncounterResponse> combatEncounterResponses = encounters.stream().map(CombatEncounterResponse::from).toList();
+        return ResponseEntity.ok(combatEncounterResponses);
     }
 
     @PostMapping("/{id}/combatants")
