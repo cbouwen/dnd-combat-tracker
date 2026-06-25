@@ -1,5 +1,7 @@
 package com.example.dnd_combat_tracker.domain;
 
+import java.util.UUID;
+
 public class Combatant {
     private final String id;
     private final String name;
@@ -31,6 +33,21 @@ public class Combatant {
         this.initiative = initiative;
         this.initiativeModifier = initiativeModifier;
         this.type = type;
+    }
+
+    public static Combatant create(
+            CombatantType type,
+            String name,
+            String templateId,
+            int maxHP,
+            int ac,
+            int initiativeModifier
+    ) {
+        return switch (type) {
+            case PC -> createPlayer(UUID.randomUUID().toString(), name, maxHP, ac, initiativeModifier);
+            case NPC -> createNPC(UUID.randomUUID().toString(), name, templateId, maxHP, ac, initiativeModifier);
+            case ENEMY -> createEnemy(UUID.randomUUID().toString(), name, templateId, maxHP, ac, initiativeModifier);
+        };
     }
 
     public static Combatant createPlayer(
