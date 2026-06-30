@@ -58,13 +58,13 @@ Multiple monsters with the same name can be added but trying to add a PC with an
 ### TODO — Campaign feature
 
 #### Domain layer
-- [ ] Create `CampaignPlayer` value object: `id`, `name`, `maxHP`, `ac`, `initiativeModifier`
-- [ ] Create `Campaign` aggregate root: `id`, `name`, `List<CampaignPlayer>`, `List<String> encounterIds`
-  - [ ] `Campaign.create(String id, String name)` factory method
-  - [ ] `addPlayer(CampaignPlayer)` — adds PC to roster
-  - [ ] `removePlayer(String playerId)` — removes PC from roster
-  - [ ] `updatePlayer(CampaignPlayer)` — replaces existing player by ID (for level-up stat changes)
-  - [ ] `addEncounterId(String encounterId)` — called when a new encounter is created
+- [x] Create `CampaignPlayer` value object: `id`, `name`, `maxHP`, `ac`, `initiativeModifier`
+- [x] Create `Campaign` aggregate root: `id`, `name`, `List<CampaignPlayer>`, `List<String> encounterIds`
+  - [x] `Campaign.create(String id, String name)` factory method
+  - [x] `addPlayer(CampaignPlayer)` — adds PC to roster
+  - [x] `removePlayer(String playerId)` — removes PC from roster
+  - [x] `updatePlayer(CampaignPlayer)` — replaces existing player by ID (for level-up stat changes)
+  - [x] `addEncounterId(String encounterId)` — called when a new encounter is created
 - [ ] Add `campaignId: String` field to `CombatEncounter`
 - [ ] Update `CombatEncounter.create()` and `createWithCombatants()` to require `campaignId`
 
