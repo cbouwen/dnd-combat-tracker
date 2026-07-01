@@ -34,3 +34,5 @@ build/
 
 ### Custom ###
 .sdkmanrc
+.MEMORY.md
+.feedback_learning_approach.md
