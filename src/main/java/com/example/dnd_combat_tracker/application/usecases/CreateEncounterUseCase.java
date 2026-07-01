@@ -16,7 +16,7 @@ public class CreateEncounterUseCase {
     }
 
     public CombatEncounter execute() {
-        CombatEncounter combatEncounter = CombatEncounter.create(UUID.randomUUID().toString());
+        CombatEncounter combatEncounter = CombatEncounter.create(UUID.randomUUID().toString(), "");
         encounterRepositoryPort.save(combatEncounter);
         return combatEncounter;
     }

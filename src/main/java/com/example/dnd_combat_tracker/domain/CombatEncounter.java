@@ -17,6 +17,7 @@ public class CombatEncounter {
     private final List<Combatant> combatants;
     private int currentTurn;
     private EncounterState state;
+    private final String campaignId;
 
     public enum EncounterState {
         PREPARING,
@@ -28,29 +29,33 @@ public class CombatEncounter {
             String id,
             List<Combatant> combatants,
             int currentTurn,
-            EncounterState state
+            EncounterState state,
+            String campaignId
     ) {
         this.id = id;
         this.combatants = combatants;
         this.currentTurn = currentTurn;
         this.state = state;
+        this.campaignId = campaignId;
     }
 
-    public static CombatEncounter create(String id) {
+    public static CombatEncounter create(String id, String campaignId) {
         return new CombatEncounter(
                 id,
                 new ArrayList<>(),
                 0,
-                EncounterState.PREPARING
+                EncounterState.PREPARING,
+                campaignId
         );
     }
 
-    public static CombatEncounter createWithCombatants(String id, List<Combatant> combatants) {
+    public static CombatEncounter createWithCombatants(String id, List<Combatant> combatants, String campaignId) {
         return new CombatEncounter(
                 id,
                 new ArrayList<>(combatants),
                 0,
-                EncounterState.PREPARING
+                EncounterState.PREPARING,
+                campaignId
         );
     }
 

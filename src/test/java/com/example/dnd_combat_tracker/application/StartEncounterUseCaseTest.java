@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -30,8 +31,8 @@ class StartEncounterUseCaseTest {
                 "pc2", 12
         );
         String combatEncounter = "encounter1";
-
-        CombatEncounter encounter = CombatEncounter.createWithCombatants(combatEncounter, combatants);
+        String campaignId = UUID.randomUUID().toString();
+        CombatEncounter encounter = CombatEncounter.createWithCombatants(combatEncounter, combatants, campaignId);
         EncounterRepositoryPort encounterRepositoryPort = mock(EncounterRepositoryPort.class);
         when(encounterRepositoryPort.findById(combatEncounter)).thenReturn(Optional.of(encounter));
         StartEncounterCommand startEncounterCommand = new StartEncounterCommand(combatEncounter, playerInitiatives);

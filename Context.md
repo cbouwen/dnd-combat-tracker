@@ -65,8 +65,8 @@ Multiple monsters with the same name can be added but trying to add a PC with an
   - [x] `removePlayer(String playerId)` — removes PC from roster
   - [x] `updatePlayer(CampaignPlayer)` — replaces existing player by ID (for level-up stat changes)
   - [x] `addEncounterId(String encounterId)` — called when a new encounter is created
-- [ ] Add `campaignId: String` field to `CombatEncounter`
-- [ ] Update `CombatEncounter.create()` and `createWithCombatants()` to require `campaignId`
+- [x] Add `campaignId: String` field to `CombatEncounter`
+- [x] Update `CombatEncounter.create()` and `createWithCombatants()` to require `campaignId`
 
 #### Application layer
 - [ ] Create `CampaignRepositoryPort` interface: `save`, `findById`, `findAll`, `clear`

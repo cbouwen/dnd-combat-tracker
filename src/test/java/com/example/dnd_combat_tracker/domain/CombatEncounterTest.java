@@ -15,7 +15,7 @@ class CombatEncounterTest {
 
     @Test
     void happyPath() {
-        CombatEncounter combatEncounter = CombatEncounter.create("10");
+        CombatEncounter combatEncounter = CombatEncounter.create("10", "");
 
         assertThat(combatEncounter.getState()).isEqualTo(CombatEncounter.EncounterState.PREPARING);
     }
@@ -27,7 +27,7 @@ class CombatEncounterTest {
                 Combatant.createPlayer("2", "Solid", 30, 18, 1)
         );
 
-        CombatEncounter combatEncounter = CombatEncounter.createWithCombatants("1800", combatants);
+        CombatEncounter combatEncounter = CombatEncounter.createWithCombatants("1800", combatants, "");
 
         assertThat(combatEncounter.getState()).isEqualTo(CombatEncounter.EncounterState.PREPARING);
         assertThat(combatEncounter.findCombatantById("1")).isPresent();
@@ -36,7 +36,7 @@ class CombatEncounterTest {
 
     @Test
     void addCombatantShouldAddToEncounter() {
-        CombatEncounter combatEncounter = CombatEncounter.create("10");
+        CombatEncounter combatEncounter = CombatEncounter.create("10", "");
 
         combatEncounter.addCombatant(Combatant.createPlayer("1", "Zeraack", 20, 15, 3));
 
@@ -105,7 +105,7 @@ class CombatEncounterTest {
                 Combatant.createPlayer("2", "Solid", 30, 18, 1),
                 Combatant.createPlayer("3", "Inhil", 30, 11, 2)
         );
-        CombatEncounter combatEncounter = CombatEncounter.createWithCombatants("1800", combatants);
+        CombatEncounter combatEncounter = CombatEncounter.createWithCombatants("1800", combatants, "");
 
         assertThrows(NotAllInitiativesSetException.class, () -> combatEncounter.startEncounter(Map.of()));
     }
@@ -117,7 +117,7 @@ class CombatEncounterTest {
                 Combatant.createPlayer("2", "Solid", 30, 18, 1),
                 Combatant.createPlayer("3", "Inhil", 15, 11, 2)
         );
-        CombatEncounter combatEncounter = CombatEncounter.createWithCombatants("1800", combatants);
+        CombatEncounter combatEncounter = CombatEncounter.createWithCombatants("1800", combatants, "");
         combatEncounter.startEncounter(Map.of("1", 15, "2", 10, "3", 20));
 
         List<Combatant> sorted = combatEncounter.getCombatants();
@@ -150,7 +150,7 @@ class CombatEncounterTest {
                 Combatant.createPlayer("2", "Solid", 30, 18, 1),
                 Combatant.createPlayer("3", "Inhil", 30, 11, 2)
         );
-        return CombatEncounter.createWithCombatants("1800", combatants);
+        return CombatEncounter.createWithCombatants("1800", combatants, "");
     }
 
     private Map<String, Integer> defaultInitiatives() {
